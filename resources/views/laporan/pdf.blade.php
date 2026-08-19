@@ -60,7 +60,7 @@
             <td colspan="2" class="text-right font-bold">
                 SALDO AWAL : Rp {{ number_format($saldoAwalHeader, 0, ',', '.') }}<br>
                 SALDO AKHIR : Rp {{ number_format($saldoAkhir, 0, ',', '.') }}
-            </td>
+            </td>                                                                        
         </tr>
 
         <!-- Table Column Headers -->

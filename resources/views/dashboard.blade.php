@@ -57,7 +57,7 @@
            <!-- Tabel Riwayat Kasbon Berlanjut -->
 <div class="bg-white p-6 rounded-xl shadow-sm border">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
-        <h3 class="font-bold text-gray-700">Riwayat Kasbon Berlanjut</h3>
+        <h3 class="font-bold text-gray-700">Riwayat Kasbon</h3>
         
         <!-- Form Filter Periode -->
         <form method="GET" action="{{ route('dashboard') }}" class="flex items-center space-x-2">
