@@ -12,7 +12,7 @@
     <div class="bg-blue-600 text-white p-5 rounded-xl shadow-sm flex items-center justify-between">
         <div>
             <p class="text-xs font-bold uppercase tracking-wider text-blue-100">Saldo Awal</p>
-            <p class="text-2xl font-extrabold mt-1">Rp {{ number_format($saldoAwal, 0, ',', '.') }}</p>
+            <p class="text-2xl font-semibold mt-1">Rp {{ number_format($saldoAwal, 0, ',', '.') }}</p>
         </div>
         <div class="p-3 bg-white/20 rounded-lg text-white">
             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -25,7 +25,7 @@
     <div class="bg-emerald-600 text-white p-5 rounded-xl shadow-sm flex items-center justify-between">
         <div>
             <p class="text-xs font-bold uppercase tracking-wider text-emerald-100">Saldo Akhir</p>
-            <p class="text-2xl font-extrabold mt-1">Rp {{ number_format($saldoAkhir, 0, ',', '.') }}</p>
+            <p class="text-2xl font-semibold mt-1">Rp {{ number_format($saldoAkhir, 0, ',', '.') }}</p>
         </div>
         <div class="p-3 bg-white/20 rounded-lg text-white">
             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">

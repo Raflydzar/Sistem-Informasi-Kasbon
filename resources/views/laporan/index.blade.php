@@ -43,15 +43,15 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl">
                     <p class="text-xs font-bold text-blue-600 uppercase">Total Debit Periode Ini</p>
-                    <p class="text-xl font-extrabold text-blue-900 mt-1">Rp {{ number_format($totalDebit, 0, ',', '.') }}</p>
+                    <p class="text-xl font-semibold text-blue-900 mt-1">Rp {{ number_format($totalDebit, 0, ',', '.') }}</p>
                 </div>
                 <div class="bg-rose-50 border border-rose-200 p-4 rounded-xl">
                     <p class="text-xs font-bold text-rose-600 uppercase">Total Kredit Periode Ini</p>
-                    <p class="text-xl font-extrabold text-rose-900 mt-1">Rp {{ number_format($totalKredit, 0, ',', '.') }}</p>
+                    <p class="text-xl font-semibold text-rose-900 mt-1">Rp {{ number_format($totalKredit, 0, ',', '.') }}</p>
                 </div>
                 <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl">
                     <p class="text-xs font-bold text-emerald-600 uppercase">Selisih Kas Periode Ini</p>
-                    <p class="text-xl font-extrabold text-emerald-900 mt-1">Rp {{ number_format($selisih, 0, ',', '.') }}</p>
+                    <p class="text-xl font-semibold text-emerald-900 mt-1">Rp {{ number_format($selisih, 0, ',', '.') }}</p>
                 </div>
             </div>
 
