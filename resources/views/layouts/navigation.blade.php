@@ -41,15 +41,12 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
-                        <!-- Authentication -->
-                        <!-- Responsive / Mobile Logout -->
+                        <!-- Form Logout Desktop / Mobile -->
 <form method="POST" action="{{ route('logout') }}">
     @csrf
-    <x-responsive-nav-link :href="route('logout')"
-            onclick="event.preventDefault();
-                        this.closest('form').submit();">
-        {{ __('Log Out') }}
-    </x-responsive-nav-link>
+    <button type="submit" class="w-full text-left px-4 py-2 text-sm font-medium text-red-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition rounded-md">
+        Log Out
+    </button>
 </form>
                     </x-slot>
                 </x-dropdown>

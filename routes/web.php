@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('transaksi', TransaksiController::class)->except(['edit','update']);
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
     Route::get('/laporan/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.pdf');
+    
 });
 
 require __DIR__.'/auth.php';
