@@ -61,7 +61,7 @@
         
         <!-- Form Filter Periode -->
         <form method="GET" action="{{ route('dashboard') }}" class="flex items-center space-x-2">
-            <label class="text-xs font-semibold text-gray-500 uppercase">Periode:</label>
+            <label class="text-xs font-semibold text-gray-500">Periode:</label>
             <select name="filter" onchange="this.form.submit()" class="text-xs rounded-lg border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 py-1.5 px-3">
                 <option value="1tahun" {{ request('filter') == '1tahun' ? 'selected' : '' }}>1 Tahun Terakhir</option>
                 <option value="minggu" {{ request('filter') == 'minggu' ? 'selected' : '' }}>1 Minggu Terakhir</option>
@@ -73,7 +73,7 @@
 
     <div class="overflow-x-auto">
         <table class="w-full text-left text-sm text-gray-600 border-collapse">
-            <thead class="bg-gray-50 uppercase text-xs text-gray-400">
+            <thead class="bg-gray-50 text-xs text-gray-400">
                 <tr>
                     <th class="p-3 border">Tanggal</th>
                     <th class="p-3 border">Deskripsi</th>
@@ -87,7 +87,7 @@
                 @forelse($riwayatKasbon as $item)
                     <tr class="border-b hover:bg-gray-50">
                         <td class="p-3 border">{{ date('d/m/Y', strtotime($item->tanggal)) }}</td>
-                        <td class="p-3 border uppercase font-medium">{{ $item->deskripsi }}</td>
+                        <td class="p-3 border font-medium">{{ $item->deskripsi }}</td>
                         <td class="p-3 border font-mono">{{ $item->kode_unit }}</td>
                         <td class="p-3 border text-right text-emerald-600 font-semibold">{{ $item->jenis == 'debit' ? 'Rp '.number_format($item->nominal, 0, ',', '.') : '-' }}</td>
                         <td class="p-3 border text-right text-rose-600 font-semibold">{{ $item->jenis == 'kredit' ? 'Rp '.number_format($item->nominal, 0, ',', '.') : '-' }}</td>
