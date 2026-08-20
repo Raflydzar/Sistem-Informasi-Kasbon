@@ -9,7 +9,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $saldoAwal = 4000000;
+        $saldoAwal = 0;
         $lastTransaksi = Transaksi::latest('id')->first();
         $totalSaldo = $lastTransaksi ? $lastTransaksi->saldo : $saldoAwal;
 
