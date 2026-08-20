@@ -13,10 +13,9 @@ class AppServiceProvider extends ServiceProvider
     }
 
     public function boot(): void
-    {
-        // Paksa semua URL asset & link menggunakan HTTPS di production
-        if (config('app.env') === 'production' || app()->environment('production')) {
-            URL::forceScheme('https');
-        }
+{
+    if (app()->environment('production')) {
+        \Illuminate\Support\Facades\URL::forceScheme('https');
     }
+}
 }
