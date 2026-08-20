@@ -17,7 +17,8 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 RUN npm install && npm run build
 
 # Setup permissions
-RUN chown -R text:text /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80
 CMD ["sh", "-c", "php artisan config:cache && php artisan route:cache && nginx -g 'daemon off;'"]
