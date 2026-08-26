@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('unit', UnitController::class);
     Route::resource('transaksi', TransaksiController::class)->except(['edit','update']);
+    Route::post('/saldo-awal', [DashboardController::class, 'updateSaldoAwal'])->name('saldo.awal.update');
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
     Route::get('/laporan/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.pdf');
     
