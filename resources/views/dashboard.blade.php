@@ -123,7 +123,7 @@
                 <div class="lg:col-span-2 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-base font-bold text-slate-900 dark:text-white">
-                            Arus Kas Bulanan (Tahun {{ date('Y') }})
+                            Arus Kas Bulanan Tahun {{ date('Y') }}
                         </h2>
                         <span class="text-xs text-slate-400">Debit vs Kredit</span>
                     </div>
