@@ -146,7 +146,7 @@
                             <tr>
                                 <th class="px-6 py-3.5">Tanggal</th>
                                 <th class="px-6 py-3.5">Jenis</th>
-                                <th class="px-6 py-3.5">Keterangan</th>
+                                <th class="px-6 py-3.5">Deskripsi</th>
                                 <th class="px-6 py-3.5 text-right">Nominal</th>
                                 <th class="px-6 py-3.5 text-right">Saldo</th>
                             </tr>
@@ -169,7 +169,7 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-slate-800 dark:text-slate-200">
-                                        {{ $trx->keterangan ?? '-' }}
+                                        {{ $trx->deskripsi ?? '-' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right font-semibold {{ $trx->jenis === 'debit' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
                                         {{ $trx->jenis === 'debit' ? '+' : '-' }} Rp {{ number_format($trx->nominal, 0, ',', '.') }}
