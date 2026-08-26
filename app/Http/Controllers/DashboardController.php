@@ -16,7 +16,7 @@ class DashboardController extends Controller
         // 2. Hitung Mutasi Kas & Saldo Akhir
         $totalDebit = Transaksi::where('jenis', 'debit')->sum('nominal');
         $totalKredit = Transaksi::where('jenis', 'kredit')->sum('nominal');
-        $totalSaldo = $saldoAwal + $totalDebit - $totalKredit;
+        $totalSaldo = $totalDebit - $totalKredit;
 
         $jumlahKasbon = Transaksi::where('jenis', 'kredit')->count();
         $transaksiHariIni = Transaksi::whereDate('tanggal', today())->count();
