@@ -7,6 +7,10 @@
         <link rel="icon" type="image/png" href="{{ asset('coin.png') }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
+        
+        <style>
+        [x-cloak] { display: none !important; }
+        </style>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
