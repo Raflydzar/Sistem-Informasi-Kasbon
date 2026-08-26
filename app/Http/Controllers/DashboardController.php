@@ -79,17 +79,30 @@ class DashboardController extends Controller
     }
 
     // Method untuk menyimpan / mengupdate nilai Saldo Awal
-    public function updateSaldoAwal(Request $request)
-    {
-        $request->validate([
-            'saldo_awal' => 'required|numeric|min:0',
-        ]);
+   public function updateSaldoAwal(Request $request)
+{
+    $request->validate([
+        'saldo_awal' => 'required|numeric|min:0',
+    ]);
 
-        Setting::updateOrCreate(
-            ['key' => 'saldo_awal'],
-            ['value' => $request->saldo_awal]
-        );
+    // 1. Simpan ke Setting
+    Setting::updateOrCreate(
+        ['key' => 'saldo_awal'],
+        ['value' => $request->saldo_awal]
+    );
 
-        return back()->with('success', 'Saldo awal berhasil diperbarui!');
-    }
+    // 2. Catat otomatis ke tabel Transaksi sebagai Debit pertama
+    Transaksi::updateOrCreate(
+        ['deskripsi' => 'Saldo Awal Sistem'],
+        [
+            'tanggal' => now()->startOfYear()->toDateString(),
+            'kode_unit' => '-',
+            'jenis' => 'debit',
+            'nominal' => $request->saldo_awal,
+            'saldo' => $request->saldo_awal,
+        ]
+    );
+
+    return back()->with('success', 'Saldo awal berhasil diperbarui dan dicatat ke transaksi!');
+}
 }
