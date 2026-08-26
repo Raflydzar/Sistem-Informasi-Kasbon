@@ -23,6 +23,15 @@ class TransaksiController extends Controller
         return view('transaksi.index', compact('transaksis', 'units', 'saldoAwal', 'saldoAkhir'));
     }
 
+    public function create(Request $request)
+{
+    // Tangkap parameter 'tipe' dari URL (default: 'keluar')
+    $tipe = $request->query('tipe', 'keluar');
+    $units = Unit::all();
+
+    return view('transaksi.create', compact('tipe', 'units'));
+}
+
     public function store(Request $request)
     {
         $request->validate([
