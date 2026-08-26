@@ -11,7 +11,7 @@
             <!-- Cards Ringkasan -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="bg-white p-4 rounded-xl shadow-sm border">
-                    <p class="text-xs font-bold text-gray-400 uppercase">Saldo Akhir</p>
+                    <p class="text-xs font-bold text-gray-400 uppercase">Saldo</p>
                     <p class="text-xl font-semibold text-emerald-600 mt-1">Rp {{ number_format($totalSaldo, 0, ',', '.') }}</p>
                 </div>
                 <div class="bg-white p-4 rounded-xl shadow-sm border">
