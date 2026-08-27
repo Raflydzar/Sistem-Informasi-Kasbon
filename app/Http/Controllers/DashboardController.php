@@ -10,8 +10,10 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        // 1. Ambil Saldo Awal dari database Setting (default 0)
+        // 1. Ambil Saldo Awal & Tanggalnya dari Database
         $saldoAwal = (float) (Setting::where('key', 'saldo_awal')->value('value') ?? 0);
+        $trxSaldoAwal = Transaksi::where('deskripsi', 'Saldo Awal Sistem')->first();
+        $tanggalSaldoAwal = $trxSaldoAwal ? $trxSaldoAwal->tanggal : date('Y-m-d');
 
         // 2. Hitung Mutasi Kas & Saldo Akhir
         $totalDebit = Transaksi::where('jenis', 'debit')->sum('nominal');
@@ -51,59 +53,62 @@ class DashboardController extends Controller
             ->where('tanggal', '>=', now()->subYears(3))
             ->groupBy('thn')->pluck('total', 'thn')->toArray();
 
-        // 5. Filter Tabel Riwayat Kasbon
-$query = Transaksi::query();
-$filter = $request->get('filter', '1tahun');
-$selectedBulan = (int) $request->get('bulan', date('n')); // 1 - 12
+        // 5. Filter Tabel Riwayat Kasbon & Dropdown Bulan
+        $query = Transaksi::query();
+        $filter = $request->get('filter', '1tahun');
+        $selectedBulan = (int) $request->get('bulan', date('n')); // 1 - 12
 
-if ($filter === 'minggu') {
-    $query->where('tanggal', '>=', now()->subDays(6));
-} elseif ($filter === 'bulan') {
-    $query->whereMonth('tanggal', $selectedBulan)
-          ->whereYear('tanggal', date('Y'));
-} elseif ($filter === 'tahun') {
-    $query->whereYear('tanggal', date('Y'));
-} else {
-    $query->where('tanggal', '>=', now()->subYear());
-}
+        if ($filter === 'minggu') {
+            $query->where('tanggal', '>=', now()->subDays(6));
+        } elseif ($filter === 'bulan') {
+            $query->whereMonth('tanggal', $selectedBulan)
+                  ->whereYear('tanggal', date('Y'));
+        } elseif ($filter === 'tahun') {
+            $query->whereYear('tanggal', date('Y'));
+        } else {
+            $query->where('tanggal', '>=', now()->subYear());
+        }
 
-$riwayatKasbon = $query->orderBy('tanggal', 'asc')
-    ->orderBy('id', 'asc')
-    ->paginate(10)
-    ->withQueryString();
+        $riwayatKasbon = $query->orderBy('tanggal', 'asc')
+            ->orderBy('id', 'asc')
+            ->paginate(10)
+            ->withQueryString();
 
-return view('dashboard', compact(
-    'saldoAwal', 'tanggalSaldoAwal', 'totalSaldo', 'totalDebit', 'totalKredit', 'jumlahKasbon', 'transaksiHariIni',
-    'debitBulanan', 'kreditBulanan', 'mingguanData', 'bulananData', 'tahunanData', 
-    'riwayatKasbon', 'filter', 'selectedBulan'
-));
+        return view('dashboard', compact(
+            'saldoAwal', 'tanggalSaldoAwal', 'totalSaldo', 'totalDebit', 'totalKredit', 'jumlahKasbon', 'transaksiHariIni',
+            'debitBulanan', 'kreditBulanan', 'mingguanData', 'bulananData', 'tahunanData', 
+            'riwayatKasbon', 'filter', 'selectedBulan'
+        ));
     }
 
     // Method untuk menyimpan / mengupdate nilai Saldo Awal
-   public function updateSaldoAwal(Request $request)
-{
-    $request->validate([
-        'saldo_awal' => 'required|numeric|min:0',
-    ]);
+    public function updateSaldoAwal(Request $request)
+    {
+        $request->validate([
+            'saldo_awal' => 'required|numeric|min:0',
+            'tanggal'    => 'required|date',
+        ]);
 
-    // 1. Simpan ke Setting
-    Setting::updateOrCreate(
-        ['key' => 'saldo_awal'],
-        ['value' => $request->saldo_awal]
-    );
+        // 1. Simpan ke Setting
+        Setting::updateOrCreate(
+            ['key' => 'saldo_awal'],
+            ['value' => $request->saldo_awal]
+        );
 
-    // 2. Catat otomatis ke tabel Transaksi sebagai Debit pertama
-    Transaksi::updateOrCreate(
-        ['deskripsi' => 'Saldo Awal Sistem'],
-        [
-            'tanggal' => $request->tanggal,
-            'kode_unit' => '-',
-            'jenis' => 'debit',
-            'nominal' => $request->saldo_awal,
-            'saldo' => $request->saldo_awal,
-        ]
-    );
+        // 2. Catat otomatis ke tabel Transaksi sebagai Debit pertama
+        Transaksi::updateOrCreate(
+            ['deskripsi' => 'Saldo Awal Sistem'],
+            [
+                'tanggal'   => $request->tanggal,
+                'no_nota'   => '-',
+                'volume'    => null,
+                'kode_unit' => '-',
+                'jenis'     => 'debit',
+                'nominal'   => $request->saldo_awal,
+                'saldo'     => $request->saldo_awal,
+            ]
+        );
 
-    return back()->with('success', 'Saldo awal berhasil diperbarui dan dicatat ke transaksi!');
-}
+        return back()->with('success', 'Saldo awal berhasil diperbarui dan dicatat ke transaksi!');
+    }
 }
