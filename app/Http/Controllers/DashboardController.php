@@ -40,31 +40,38 @@ class DashboardController extends Controller
             }
         }
 
-        // 4. Data Grafik Frekuensi Transaksi
-        $mingguanData = Transaksi::selectRaw('DATE(tanggal) as tgl, COUNT(*) as total')
-            ->where('tanggal', '>=', now()->subDays(6))
-            ->groupBy('tgl')->pluck('total', 'tgl')->toArray();
+        // 4. Data Grafik Frekuensi Transaksi Per Minggu (Berdasarkan Bulan Terpilih)
+        $selectedBulan = (int) $request->get('bulan', date('n')); // 1 - 12
+        $tahunAktif = date('Y');
 
-        $bulananData = Transaksi::selectRaw('MONTH(tanggal) as bln, COUNT(*) as total')
-            ->whereYear('tanggal', date('Y'))
-            ->groupBy('bln')->pluck('total', 'bln')->toArray();
+        $mingguanDataRaw = Transaksi::selectRaw('WEEK(tanggal, 1) - WEEK(DATE_SUB(tanggal, INTERVAL DAYOFMONTH(tanggal)-1 DAY), 1) + 1 as minggu, COUNT(*) as total')
+            ->whereMonth('tanggal', $selectedBulan)
+            ->whereYear('tanggal', $tahunAktif)
+            ->groupBy('minggu')
+            ->pluck('total', 'minggu')
+            ->toArray();
 
-        $tahunanData = Transaksi::selectRaw('YEAR(tanggal) as thn, COUNT(*) as total')
-            ->where('tanggal', '>=', now()->subYears(3))
-            ->groupBy('thn')->pluck('total', 'thn')->toArray();
+        $frekuensiMingguan = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $frekuensiMingguan[$i] = $mingguanDataRaw[$i] ?? 0;
+        }
+
+        // Variabel lama dipertahankan agar tidak error di bagian lain
+        $mingguanData = [];
+        $bulananData = [];
+        $tahunanData = [];
 
         // 5. Filter Tabel Riwayat Kasbon & Dropdown Bulan
         $query = Transaksi::query();
         $filter = $request->get('filter', '1tahun');
-        $selectedBulan = (int) $request->get('bulan', date('n')); // 1 - 12
 
         if ($filter === 'minggu') {
             $query->where('tanggal', '>=', now()->subDays(6));
         } elseif ($filter === 'bulan') {
             $query->whereMonth('tanggal', $selectedBulan)
-                  ->whereYear('tanggal', date('Y'));
+                  ->whereYear('tanggal', $tahunAktif);
         } elseif ($filter === 'tahun') {
-            $query->whereYear('tanggal', date('Y'));
+            $query->whereYear('tanggal', $tahunAktif);
         } else {
             $query->where('tanggal', '>=', now()->subYear());
         }
@@ -77,7 +84,7 @@ class DashboardController extends Controller
         return view('dashboard', compact(
             'saldoAwal', 'tanggalSaldoAwal', 'totalSaldo', 'totalDebit', 'totalKredit', 'jumlahKasbon', 'transaksiHariIni',
             'debitBulanan', 'kreditBulanan', 'mingguanData', 'bulananData', 'tahunanData', 
-            'riwayatKasbon', 'filter', 'selectedBulan'
+            'frekuensiMingguan', 'riwayatKasbon', 'filter', 'selectedBulan'
         ));
     }
 

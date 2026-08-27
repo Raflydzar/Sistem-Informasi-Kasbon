@@ -132,13 +132,20 @@
                     </div>
                 </div>
 
-                <!-- Grafik Frekuensi Transaksi -->
+                <!-- Grafik Frekuensi Transaksi Per Minggu -->
                 <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between">
                     <div>
                         <h2 class="text-base font-bold text-slate-900 dark:text-white mb-1">
                             Aktivitas Transaksi
                         </h2>
-                        <p class="text-xs text-slate-400 mb-4">Frekuensi transaksi tahun {{ date('Y') }}</p>
+                        @php
+                            $daftarBulan = [
+                                1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+                                5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+                                9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+                            ];
+                        @endphp
+                        <p class="text-xs text-slate-400 mb-4">Frekuensi per minggu (Bulan {{ $daftarBulan[$selectedBulan] ?? 'Ini' }})</p>
                         <div class="h-56">
                             <canvas id="chartFrekuensi"></canvas>
                         </div>
@@ -158,54 +165,47 @@
                     </div>
 
                    <!-- Filter Rentang Waktu -->
-<div class="flex flex-wrap items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-medium">
-    
-    <!-- 7 Hari -->
-    <a href="{{ route('dashboard', ['filter' => 'minggu']) }}" 
-       class="px-3 py-1.5 rounded-lg transition {{ $filter === 'minggu' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
-        7 Hari
-    </a>
+                    <div class="flex flex-wrap items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-medium">
+                        
+                        <!-- 7 Hari -->
+                        <a href="{{ route('dashboard', ['filter' => 'minggu']) }}" 
+                           class="px-3 py-1.5 rounded-lg transition {{ $filter === 'minggu' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
+                            7 Hari
+                        </a>
 
-    <!-- Dropdown Per Bulan -->
-    <div class="relative">
-        @php
-            $daftarBulan = [
-                1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
-                5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
-                9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
-            ];
-        @endphp
-        <select onchange="window.location.href = this.value" 
-                class="appearance-none bg-transparent cursor-pointer pl-3 pr-7 py-1.5 rounded-lg transition border-0 text-xs font-medium focus:ring-0 focus:outline-none {{ $filter === 'bulan' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
-            <option value="" disabled {{ $filter !== 'bulan' ? 'selected' : '' }} class="dark:bg-slate-900 text-slate-400">
-                Pilih Bulan
-            </option>
-            @foreach($daftarBulan as $num => $nama)
-                <option value="{{ route('dashboard', ['filter' => 'bulan', 'bulan' => $num]) }}" 
-                        {{ $filter === 'bulan' && $selectedBulan === $num ? 'selected' : '' }}
-                        class="dark:bg-slate-900 text-slate-800 dark:text-slate-200">
-                    {{ $nama }}
-                </option>
-            @endforeach
-        </select>
-        <!-- Ikon Panah Dropdown -->
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-slate-400">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </div>
-    </div>
+                        <!-- Dropdown Per Bulan -->
+                        <div class="relative">
+                            <select onchange="window.location.href = this.value" 
+                                    class="appearance-none bg-transparent cursor-pointer pl-3 pr-7 py-1.5 rounded-lg transition border-0 text-xs font-medium focus:ring-0 focus:outline-none {{ $filter === 'bulan' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
+                                <option value="" disabled {{ $filter !== 'bulan' ? 'selected' : '' }} class="dark:bg-slate-900 text-slate-400">
+                                    Pilih Bulan
+                                </option>
+                                @foreach($daftarBulan as $num => $nama)
+                                    <option value="{{ route('dashboard', ['filter' => 'bulan', 'bulan' => $num]) }}" 
+                                            {{ $filter === 'bulan' && $selectedBulan === $num ? 'selected' : '' }}
+                                            class="dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+                                        {{ $nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <!-- Ikon Panah Dropdown -->
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-slate-400">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                        </div>
 
-    <!-- Tahun Ini -->
-    <a href="{{ route('dashboard', ['filter' => 'tahun']) }}" 
-       class="px-3 py-1.5 rounded-lg transition {{ $filter === 'tahun' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
-        Tahun Ini
-    </a>
+                        <!-- Tahun Ini -->
+                        <a href="{{ route('dashboard', ['filter' => 'tahun']) }}" 
+                           class="px-3 py-1.5 rounded-lg transition {{ $filter === 'tahun' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
+                            Tahun Ini
+                        </a>
 
-    <!-- 1 Tahun Terakhir -->
-    <a href="{{ route('dashboard', ['filter' => '1tahun']) }}" 
-       class="px-3 py-1.5 rounded-lg transition {{ $filter === '1tahun' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
-        1 Tahun Terakhir
-    </a>
-</div>
+                        <!-- 1 Tahun Terakhir -->
+                        <a href="{{ route('dashboard', ['filter' => '1tahun']) }}" 
+                           class="px-3 py-1.5 rounded-lg transition {{ $filter === '1tahun' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
+                            1 Tahun Terakhir
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Isi Tabel -->
@@ -331,90 +331,90 @@
         document.addEventListener("DOMContentLoaded", () => {
             const bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
             
-           // Inisialisasi Grafik Arus Kas (Gaya Garis Lurus Keuangan)
-const ctxArusKas = document.getElementById('chartArusKas').getContext('2d');
-
-new Chart(ctxArusKas, {
-    type: 'bar',
-    data: {
-        labels: bulanLabels,
-        datasets: [
-            {
-                label: 'Debit (Masuk)',
-                data: {!! json_encode(array_values($debitBulanan)) !!},
-                backgroundColor: '#10b981',
-                borderRadius: 4,
-                order: 2
-            },
-            {
-                label: 'Kredit (Kasbon)',
-                data: {!! json_encode(array_values($kreditBulanan)) !!},
-                backgroundColor: '#f43f5e',
-                borderRadius: 4,
-                order: 2
-            },
-            {
-                label: 'Tren Debit',
-                data: {!! json_encode(array_values($debitBulanan)) !!},
-                type: 'line',
-                borderColor: '#059669',
-                backgroundColor: 'transparent',
-                fill: false,
-                borderWidth: 2.5,
-                tension: 0, // Membuat garis lurus bersudut, tidak melengkung
-                pointRadius: 4,
-                pointBackgroundColor: '#059669',
-                order: 1
-            },
-            {
-                label: 'Tren Kredit',
-                data: {!! json_encode(array_values($kreditBulanan)) !!},
-                type: 'line',
-                borderColor: '#e11d48',
-                backgroundColor: 'transparent',
-                fill: false,
-                borderWidth: 2.5,
-                tension: 0,
-                pointRadius: 4,
-                pointBackgroundColor: '#e11d48',
-                order: 1
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    callback: (value) => 'Rp ' + value.toLocaleString('id-ID')
+            // Inisialisasi Grafik Arus Kas (Gaya Garis Lurus Keuangan)
+            const ctxArusKas = document.getElementById('chartArusKas').getContext('2d');
+            new Chart(ctxArusKas, {
+                type: 'bar',
+                data: {
+                    labels: bulanLabels,
+                    datasets: [
+                        {
+                            label: 'Debit (Masuk)',
+                            data: {!! json_encode(array_values($debitBulanan)) !!},
+                            backgroundColor: '#10b981',
+                            borderRadius: 4,
+                            order: 2
+                        },
+                        {
+                            label: 'Kredit (Kasbon)',
+                            data: {!! json_encode(array_values($kreditBulanan)) !!},
+                            backgroundColor: '#f43f5e',
+                            borderRadius: 4,
+                            order: 2
+                        },
+                        {
+                            label: 'Tren Debit',
+                            data: {!! json_encode(array_values($debitBulanan)) !!},
+                            type: 'line',
+                            borderColor: '#059669',
+                            backgroundColor: 'transparent',
+                            fill: false,
+                            borderWidth: 2.5,
+                            tension: 0,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#059669',
+                            order: 1
+                        },
+                        {
+                            label: 'Tren Kredit',
+                            data: {!! json_encode(array_values($kreditBulanan)) !!},
+                            type: 'line',
+                            borderColor: '#e11d48',
+                            backgroundColor: 'transparent',
+                            fill: false,
+                            borderWidth: 2.5,
+                            tension: 0,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#e11d48',
+                            order: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: (value) => 'Rp ' + value.toLocaleString('id-ID')
+                            }
+                        }
+                    }
                 }
-            }
-        }
-    }
-});
+            });
 
-            // Inisialisasi Grafik Frekuensi Transaksi Bulanan
-            const frekuensiDataObj = {!! json_encode($bulananData) !!};
-            const frekuensiValues = Array.from({length: 12}, (_, i) => frekuensiDataObj[i + 1] || 0);
+            // Inisialisasi Grafik Frekuensi Transaksi Per Minggu
+            const labelsMingguan = ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4', 'Minggu 5'];
+            const dataMingguan = {!! json_encode(array_values($frekuensiMingguan)) !!};
 
             const ctxFrekuensi = document.getElementById('chartFrekuensi').getContext('2d');
             new Chart(ctxFrekuensi, {
                 type: 'line',
                 data: {
-                    labels: bulanLabels,
+                    labels: labelsMingguan,
                     datasets: [{
                         label: 'Total Aktivitas',
-                        data: frekuensiValues,
+                        data: dataMingguan,
                         borderColor: '#6366f1',
                         backgroundColor: 'rgba(99, 102, 241, 0.1)',
                         fill: true,
                         tension: 0.35,
-                        pointRadius: 3
+                        pointRadius: 4,
+                        pointBackgroundColor: '#6366f1'
                     }]
                 },
                 options: {
@@ -424,7 +424,10 @@ new Chart(ctxArusKas, {
                         legend: { display: false }
                     },
                     scales: {
-                        y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                        y: { 
+                            beginAtZero: true, 
+                            ticks: { stepSize: 1 } 
+                        }
                     }
                 }
             });
