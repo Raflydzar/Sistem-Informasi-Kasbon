@@ -265,6 +265,13 @@
                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
                     </div>
 
+                    <!-- Input Tanggal -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Tanggal Saldo Awal</label>
+                        <input type="date" name="tanggal" value="{{ $tanggalSaldoAwal ?? date('Y-m-d') }}" required
+                       class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
                     <div class="flex items-center justify-end gap-2 pt-2">
                         <button type="button" @click="openSaldoModal = false" class="px-4 py-2 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 transition">
                             Batal

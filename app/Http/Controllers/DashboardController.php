@@ -95,7 +95,7 @@ class DashboardController extends Controller
     Transaksi::updateOrCreate(
         ['deskripsi' => 'Saldo Awal Sistem'],
         [
-            'tanggal' => now()->startOfYear()->toDateString(),
+            'tanggal' => $request->tanggal,
             'kode_unit' => '-',
             'jenis' => 'debit',
             'nominal' => $request->saldo_awal,
