@@ -183,20 +183,22 @@
                     <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
                         <thead class="bg-slate-50/75 dark:bg-slate-800/50 text-xs font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800">
                             <tr>
-                                <th class="px-6 py-3.5">Tanggal</th>
-                                <th class="px-6 py-3.5">Jenis</th>
-                                <th class="px-6 py-3.5">Deskripsi</th>
-                                <th class="px-6 py-3.5 text-right">Nominal</th>
-                                <th class="px-6 py-3.5 text-right">Saldo</th>
+                                <th class="px-5 py-3.5">Tanggal</th>
+                                <th class="px-5 py-3.5">Jenis</th>
+                                <th class="px-5 py-3.5">Deskripsi</th>
+                                <th class="px-5 py-3.5">Nota</th>
+                                <th class="px-5 py-3.5 text-center">Vol (L)</th>
+                                <th class="px-5 py-3.5 text-right">Nominal</th>
+                                <th class="px-5 py-3.5 text-right">Saldo</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                             @forelse ($riwayatKasbon as $trx)
                                 <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition">
-                                    <td class="px-6 py-4 whitespace-nowrap text-xs text-slate-500">
+                                    <td class="px-5 py-4 whitespace-nowrap text-xs text-slate-500">
                                         {{ \Carbon\Carbon::parse($trx->tanggal)->translatedFormat('d M Y') }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-5 py-4 whitespace-nowrap">
                                         @if ($trx->jenis === 'debit')
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
                                                 Debit (Masuk)
@@ -207,19 +209,25 @@
                                             </span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 text-slate-800 dark:text-slate-200">
+                                    <td class="px-5 py-4 text-slate-800 dark:text-slate-200">
                                         {{ $trx->deskripsi ?? '-' }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right font-semibold {{ $trx->jenis === 'debit' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
+                                    <td class="px-5 py-4 whitespace-nowrap font-mono text-xs text-slate-500">
+                                        {{ $trx->no_nota ?? '-' }}
+                                    </td>
+                                    <td class="px-5 py-4 whitespace-nowrap text-center text-xs text-slate-500">
+                                        {{ $trx->volume ? $trx->volume . ' L' : '-' }}
+                                    </td>
+                                    <td class="px-5 py-4 whitespace-nowrap text-right font-semibold {{ $trx->jenis === 'debit' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
                                         {{ $trx->jenis === 'debit' ? '+' : '-' }} Rp {{ number_format($trx->nominal, 0, ',', '.') }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right font-medium text-slate-700 dark:text-slate-300">
+                                    <td class="px-5 py-4 whitespace-nowrap text-right font-medium text-slate-700 dark:text-slate-300">
                                         Rp {{ number_format($trx->saldo ?? 0, 0, ',', '.') }}
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="px-6 py-10 text-center text-slate-400 text-sm">
+                                    <td colspan="7" class="px-5 py-10 text-center text-slate-400 text-sm">
                                         Tidak ada riwayat transaksi pada filter ini.
                                     </td>
                                 </tr>
@@ -259,17 +267,19 @@
 
                 <form action="{{ route('saldo.awal.update') }}" method="POST" class="space-y-4">
                     @csrf
-                    <div>
-                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Nominal (Rp)</label>
-                        <input type="number" name="saldo_awal" value="{{ $saldoAwal }}" required min="0"
-                               class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
-                    </div>
-
+                    
                     <!-- Input Tanggal -->
                     <div>
                         <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Tanggal Saldo Awal</label>
                         <input type="date" name="tanggal" value="{{ $tanggalSaldoAwal ?? date('Y-m-d') }}" required
-                       class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none">
+                               class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    </div>
+
+                    <!-- Input Nominal -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Nominal (Rp)</label>
+                        <input type="number" name="saldo_awal" value="{{ $saldoAwal }}" required min="0"
+                               class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
                     </div>
 
                     <div class="flex items-center justify-end gap-2 pt-2">

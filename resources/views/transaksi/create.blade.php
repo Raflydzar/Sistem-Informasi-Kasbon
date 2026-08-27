@@ -22,7 +22,8 @@
                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
                     </div>
 
-                    <!-- Pilih Unit -->
+                    <!-- Pilih Unit (Khusus Kasbon/Kredit) -->
+                    @if($tipe === 'keluar')
                     <div>
                         <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Pilih Unit</label>
                         <select name="kode_unit" required 
@@ -33,12 +34,28 @@
                             @endforeach
                         </select>
                     </div>
+                    @endif
 
                     <!-- Deskripsi -->
                     <div>
                         <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Deskripsi / Keperluan</label>
-                        <input type="text" name="deskripsi" placeholder="{{ $tipe === 'masuk' ? 'Contoh: Pengisian Kas Operasional' : 'Contoh: Kasbon BBM / Konsumsi' }}" required 
+                        <input type="text" name="deskripsi" placeholder="{{ $tipe === 'masuk' ? 'Contoh: Pengisian Kas Operasional' : 'Contoh: BBM - NAMA' }}" required 
                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+                    </div>
+
+                    <!-- No Nota & Volume (L) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">No. Nota (Opsional)</label>
+                            <input type="text" name="no_nota" placeholder="Contoh: NT-001" 
+                                   class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Volume Liter (Opsional)</label>
+                            <input type="number" step="0.01" name="volume" placeholder="Contoh: 15.5" 
+                                   class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+                        </div>
                     </div>
 
                     <!-- Nominal -->

@@ -52,6 +52,8 @@ class TransaksiController extends Controller
         Transaksi::create([
             'tanggal'   => $request->tanggal,
             'deskripsi' => $request->deskripsi,
+            'no_nota'   => $request->no_nota ?? '-',
+            'volume'    => $request->volume ?? null,
             'kode_unit' => $request->kode_unit,
             'jenis'     => $request->jenis,
             'nominal'   => $request->nominal,

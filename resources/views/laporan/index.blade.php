@@ -1,87 +1,122 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Laporan Kasbon</h2>
+        <h2 class="font-bold text-xl text-slate-800 dark:text-slate-100 leading-tight">
+            Laporan Kasbon
+        </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="py-8 bg-slate-50 dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             
-            <!-- Filter Box -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <!-- 1. Filter Box -->
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
                 <form method="GET" action="{{ route('laporan.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
                     <div>
-                        <label class="text-xs font-bold text-gray-600 uppercase">Tanggal Awal</label>
-                        <input type="date" name="tgl_awal" value="{{ $tglAwal }}" class="w-full mt-1 text-sm rounded-lg border-gray-300">
+                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Tanggal Awal</label>
+                        <input type="date" name="tgl_awal" value="{{ $tglAwal }}" 
+                               class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-gray-600 uppercase">Tanggal Akhir</label>
-                        <input type="date" name="tgl_akhir" value="{{ $tglAkhir }}" class="w-full mt-1 text-sm rounded-lg border-gray-300">
+                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Tanggal Akhir</label>
+                        <input type="date" name="tgl_akhir" value="{{ $tglAkhir }}" 
+                               class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-gray-600 uppercase">Unit</label>
-                        <select name="kode_unit" class="w-full mt-1 text-sm rounded-lg border-gray-300">
-                            <option value="">-- Semua Unit --</option>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Unit</label>
+                        <select name="kode_unit" 
+                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none">
+                            <option value="" class="dark:bg-slate-900">-- Semua Unit --</option>
                             @foreach($units as $u)
-                                <option value="{{ $u->kode_unit }}" {{ $kodeUnit == $u->kode_unit ? 'selected' : '' }}>
+                                <option value="{{ $u->kode_unit }}" class="dark:bg-slate-900" {{ $kodeUnit == $u->kode_unit ? 'selected' : '' }}>
                                     {{ $u->kode_unit }} - {{ $u->nama_unit }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="flex space-x-2">
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg text-sm">
+                    <div class="flex items-center gap-2">
+                        <button type="submit" 
+                                class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 px-4 rounded-xl text-sm transition shadow-sm">
                             Filter
                         </button>
-                        <a href="{{ route('laporan.pdf', request()->all()) }}" target="_blank" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-lg text-sm text-center">
+                        <a href="{{ route('laporan.pdf', request()->all()) }}" target="_blank" 
+                           class="w-full bg-rose-600 hover:bg-rose-500 text-white font-medium py-2 px-4 rounded-xl text-sm text-center transition shadow-sm">
                             Cetak PDF
                         </a>
                     </div>
                 </form>
             </div>
 
-            <!-- Summary Cards -->
+            <!-- 2. Summary Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl">
-                    <p class="text-xs font-bold text-blue-600 uppercase">Total Debit Periode Ini</p>
-                    <p class="text-xl font-semibold text-blue-900 mt-1">Rp {{ number_format($totalDebit, 0, ',', '.') }}</p>
+                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Debit Periode Ini</span>
+                    <p class="text-xl font-bold tracking-tight text-blue-600 dark:text-blue-400 mt-2">
+                        Rp {{ number_format($totalDebit, 0, ',', '.') }}
+                    </p>
                 </div>
-                <div class="bg-rose-50 border border-rose-200 p-4 rounded-xl">
-                    <p class="text-xs font-bold text-rose-600 uppercase">Total Kredit Periode Ini</p>
-                    <p class="text-xl font-semibold text-rose-900 mt-1">Rp {{ number_format($totalKredit, 0, ',', '.') }}</p>
+                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Kredit Periode Ini</span>
+                    <p class="text-xl font-bold tracking-tight text-rose-600 dark:text-rose-400 mt-2">
+                        Rp {{ number_format($totalKredit, 0, ',', '.') }}
+                    </p>
                 </div>
-                <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl">
-                    <p class="text-xs font-bold text-emerald-600 uppercase">Selisih Kas Periode Ini</p>
-                    <p class="text-xl font-semibold text-emerald-900 mt-1">Rp {{ number_format($selisih, 0, ',', '.') }}</p>
+                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Selisih Kas Periode Ini</span>
+                    <p class="text-xl font-bold tracking-tight text-emerald-600 dark:text-emerald-400 mt-2">
+                        Rp {{ number_format($selisih, 0, ',', '.') }}
+                    </p>
                 </div>
             </div>
 
-            <!-- Table -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <!-- 3. Tabel Laporan -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-gray-600 border-collapse">
-                        <thead class="bg-gray-50 uppercase text-xs text-gray-400">
+                    <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+                        <thead class="bg-slate-50/75 dark:bg-slate-800/50 text-xs font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800">
                             <tr>
-                                <th class="p-3 border">Tanggal</th>
-                                <th class="p-3 border">Deskripsi</th>
-                                <th class="p-3 border">Kode Unit</th>
-                                <th class="p-3 border text-right">Debit</th>
-                                <th class="p-3 border text-right">Kredit</th>
-                                <th class="p-3 border text-right">Saldo</th>
+                                <th class="px-5 py-3.5">Tanggal</th>
+                                <th class="px-5 py-3.5">Deskripsi</th>
+                                <th class="px-5 py-3.5">Nota</th>
+                                <th class="px-5 py-3.5 text-center">Volume</th>
+                                <th class="px-5 py-3.5">Kode Unit</th>
+                                <th class="px-5 py-3.5 text-right">Debit</th>
+                                <th class="px-5 py-3.5 text-right">Kredit</th>
+                                <th class="px-5 py-3.5 text-right">Saldo</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                             @forelse($transaksis as $item)
-                                <tr class="border-b hover:bg-gray-50">
-                                    <td class="p-3 border">{{ date('d/m/Y', strtotime($item->tanggal)) }}</td>
-                                    <td class="p-3 border uppercase font-medium">{{ $item->deskripsi }}</td>
-                                    <td class="p-3 border font-mono">{{ $item->kode_unit }}</td>
-                                    <td class="p-3 border text-right text-emerald-600 font-semibold">{{ $item->jenis == 'debit' ? 'Rp '.number_format($item->nominal, 0, ',', '.') : '-' }}</td>
-                                    <td class="p-3 border text-right text-rose-600 font-semibold">{{ $item->jenis == 'kredit' ? 'Rp '.number_format($item->nominal, 0, ',', '.') : '-' }}</td>
-                                    <td class="p-3 border text-right font-bold">Rp {{ number_format($item->saldo, 0, ',', '.') }}</td>
+                                <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition">
+                                    <td class="px-5 py-4 whitespace-nowrap text-xs text-slate-500">
+                                        {{ date('d/m/Y', strtotime($item->tanggal)) }}
+                                    </td>
+                                    <td class="px-5 py-4 uppercase font-medium text-slate-800 dark:text-slate-200">
+                                        {{ $item->deskripsi }}
+                                    </td>
+                                    <td class="px-5 py-4 whitespace-nowrap font-mono text-xs text-slate-500">
+                                        {{ $item->no_nota ?? '-' }}
+                                    </td>
+                                    <td class="px-5 py-4 whitespace-nowrap text-center text-xs text-slate-500">
+                                        {{ $item->volume ? $item->volume . ' L' : '-' }}
+                                    </td>
+                                    <td class="px-5 py-4 whitespace-nowrap font-mono text-xs text-slate-500">
+                                        {{ $item->kode_unit }}
+                                    </td>
+                                    <td class="px-5 py-4 whitespace-nowrap text-right font-semibold text-emerald-600 dark:text-emerald-400">
+                                        {{ $item->jenis == 'debit' ? 'Rp '.number_format($item->nominal, 0, ',', '.') : '-' }}
+                                    </td>
+                                    <td class="px-5 py-4 whitespace-nowrap text-right font-semibold text-rose-600 dark:text-rose-400">
+                                        {{ $item->jenis == 'kredit' ? 'Rp '.number_format($item->nominal, 0, ',', '.') : '-' }}
+                                    </td>
+                                    <td class="px-5 py-4 whitespace-nowrap text-right font-bold text-slate-900 dark:text-slate-100">
+                                        Rp {{ number_format($item->saldo, 0, ',', '.') }}
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="p-4 text-center text-gray-400">Tidak ada data transaksi pada periode ini.</td>
+                                    <td colspan="8" class="px-5 py-10 text-center text-slate-400 text-sm">
+                                        Tidak ada data transaksi pada periode ini.
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>

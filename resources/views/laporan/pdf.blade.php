@@ -4,77 +4,81 @@
     <meta charset="utf-8">
     <title>Laporan Kasbon</title>
     <style>
-    /* Margin Kertas Print (Atas/Bawah: 1.5cm, Kiri/Kanan: 1.2cm) */
-    @page { 
-        margin: 1.5cm 1.2cm; 
-    }
-    
-    body { 
-        font-family: Arial, sans-serif; 
-        font-size: 10px; 
-        color: #000; 
-    }
-    
-    /* Tabel Utama */
-    .main-table { 
-        width: 100%; 
-        border-collapse: collapse; 
-        margin-bottom: 20px; 
-    }
-    .main-table th, .main-table td { 
-        border: 1px solid #000; 
-        padding: 4px 6px; 
-        font-size: 9px; 
-    }
-    
-    .header-title { font-weight: bold; font-size: 11px; text-transform: uppercase; }
-    .text-center { text-align: center; }
-    .text-right { text-align: right; }
-    .text-left { text-align: left; }
-    .font-bold { font-weight: bold; }
-    
-    /* Tabel Tanda Tangan */
-    .signature-table { 
-        width: 100%; 
-        border-collapse: collapse; 
-        margin-top: 25px; 
-        border: none; 
-    }
-    .signature-table td { 
-        border: none !important; 
-        padding: 0; 
-        vertical-align: top; 
-    }
-</style>
+        /* Margin Kertas Print (Atas/Bawah: 1.5cm, Kiri/Kanan: 1.2cm) */
+        @page { 
+            margin: 1.5cm 1.2cm; 
+        }
+        
+        body { 
+            font-family: Arial, sans-serif; 
+            font-size: 10px; 
+            color: #000; 
+        }
+        
+        /* Tabel Utama */
+        .main-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-bottom: 20px; 
+        }
+        .main-table th, .main-table td { 
+            border: 1px solid #000; 
+            padding: 4px 5px; 
+            font-size: 8.5px; 
+        }
+        
+        .header-title { font-weight: bold; font-size: 10.5px; text-transform: uppercase; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .text-left { text-align: left; }
+        .font-bold { font-weight: bold; }
+        
+        /* Tabel Tanda Tangan */
+        .signature-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 25px; 
+            border: none; 
+        }
+        .signature-table td { 
+            border: none !important; 
+            padding: 0; 
+            vertical-align: top; 
+        }
+    </style>
 </head>
 <body>
 
     <!-- Tabel Utama -->
     <table class="main-table">
-       <!-- Baris Header Judul & Saldo -->
+        <!-- Baris Header Judul & Saldo (Total 8 Kolom) -->
         <tr>
             <td colspan="2" class="header-title font-bold">KASBON</td>
-            <td colspan="2" class="header-title font-bold text-center">
+            <td colspan="3" class="header-title font-bold text-center">
                 {{ \Carbon\Carbon::parse($tglAwal)->translatedFormat('j F Y') }} SD {{ \Carbon\Carbon::parse($tglAkhir)->translatedFormat('j F Y') }}
             </td>
-            <td colspan="2" class="text-right font-bold">
+            <td colspan="3" class="text-right font-bold">
                 SALDO AWAL : Rp {{ number_format($saldoAwalHeader, 0, ',', '.') }}<br>
                 SALDO AKHIR : Rp {{ number_format($saldoAkhir, 0, ',', '.') }}
-            </td>                                                                        
+            </td>                                                                                
         </tr>
 
         <!-- Table Column Headers -->
         <tr style="background-color: #f5f5f5;">
-            <th width="12%" class="text-center font-bold">TANGGAL</th>
-            <th width="40%" class="text-center font-bold">DESKRIPSI</th>
-            <th width="12%" class="text-center font-bold">KODE UNIT</th>
-            <th width="12%" class="text-center font-bold">DEBIT</th>
-            <th width="12%" class="text-center font-bold">KREDIT</th>
+            <th width="11%" class="text-center font-bold">TANGGAL</th>
+            <th width="27%" class="text-center font-bold">DESKRIPSI</th>
+            <th width="10%" class="text-center font-bold">NOTA</th>
+            <th width="8%" class="text-center font-bold">VOL (L)</th>
+            <th width="10%" class="text-center font-bold">KODE UNIT</th>
+            <th width="11%" class="text-center font-bold">DEBIT</th>
+            <th width="11%" class="text-center font-bold">KREDIT</th>
             <th width="12%" class="text-center font-bold">SALDO</th>
         </tr>
 
         <!-- Row Summary Atas -->
         <tr>
+            <td></td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -92,6 +96,8 @@
             <tr>
                 <td class="text-center">{{ date('d/m/Y', strtotime($item->tanggal)) }}</td>
                 <td class="text-left font-bold" style="text-transform: uppercase;">{{ $item->deskripsi }}</td>
+                <td class="text-center">{{ $item->no_nota ?? '-' }}</td>
+                <td class="text-center">{{ $item->volume ? $item->volume . ' L' : '-' }}</td>
                 <td class="text-center">{{ $item->kode_unit }}</td>
                 <td class="text-right">
                     {{ $item->jenis == 'debit' ? 'Rp '.number_format($item->nominal, 0, ',', '.') : '' }}
@@ -105,10 +111,12 @@
             </tr>
         @endforeach
 
-        <!-- Baris Kosong Tambahan -->
+        <!-- Baris Kosong Tambahan (Total 8 Kolom) -->
         @for($i = count($transaksis); $i < 10; $i++)
             <tr>
                 <td style="height: 15px;"></td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -118,7 +126,7 @@
         @endfor
     </table>
 
-    <!-- Tanda Tangan (Menggunakan Tabel agar Rata Pinggir Presisi) -->
+    <!-- Tanda Tangan -->
     <table class="signature-table">
         <tr>
             <td style="width: 50%; text-align: left;">
