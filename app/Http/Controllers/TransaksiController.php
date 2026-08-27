@@ -32,34 +32,36 @@ class TransaksiController extends Controller
     return view('transaksi.create', compact('tipe', 'units'));
 }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'tanggal'   => 'required|date',
-            'deskripsi' => 'required|string',
-            'kode_unit' => 'required|exists:units,kode_unit', // Validasi unit harus ada di Master Data
-            'jenis'     => 'required|in:debit,kredit',
-            'nominal'   => 'required|numeric|gt:0',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'tanggal'   => 'required|date',
+        'deskripsi' => 'required|string',
+        'jenis'     => 'required|in:debit,kredit',
+        'nominal'   => 'required|numeric|gt:0',
+        'kode_unit' => $request->jenis === 'kredit' ? 'required|exists:units,kode_unit' : 'nullable',
+        'no_nota'   => 'nullable|string',
+        'volume'    => 'nullable|numeric',
+    ]);
 
-        $lastTransaksi = Transaksi::latest('id')->first();
-        $saldoTerakhir = $lastTransaksi ? $lastTransaksi->saldo : 0;
+    $lastTransaksi = Transaksi::latest('id')->first();
+    $saldoTerakhir = $lastTransaksi ? $lastTransaksi->saldo : 0;
 
-        $saldoBaru = $request->jenis === 'debit'
-            ? $saldoTerakhir + $request->nominal
-            : $saldoTerakhir - $request->nominal;
+    $saldoBaru = $request->jenis === 'debit'
+        ? $saldoTerakhir + $request->nominal
+        : $saldoTerakhir - $request->nominal;
 
-        Transaksi::create([
-            'tanggal'   => $request->tanggal,
-            'deskripsi' => $request->deskripsi,
-            'no_nota'   => $request->no_nota ?? '-',
-            'volume'    => $request->volume ?? null,
-            'kode_unit' => $request->kode_unit,
-            'jenis'     => $request->jenis,
-            'nominal'   => $request->nominal,
-            'saldo'     => $saldoBaru,
-        ]);
+    Transaksi::create([
+        'tanggal'   => $request->tanggal,
+        'deskripsi' => $request->deskripsi,
+        'no_nota'   => $request->no_nota ?? '-',
+        'volume'    => $request->volume ?? null,
+        'kode_unit' => $request->jenis === 'debit' ? '-' : $request->kode_unit,
+        'jenis'     => $request->jenis,
+        'nominal'   => $request->nominal,
+        'saldo'     => $saldoBaru,
+    ]);
 
-        return back()->with('success', 'Transaksi berhasil disimpan!');
-    }
+    return redirect()->route('dashboard')->with('success', 'Transaksi berhasil disimpan!');
+}
 }
