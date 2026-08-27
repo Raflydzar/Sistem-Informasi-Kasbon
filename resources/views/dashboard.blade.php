@@ -331,13 +331,23 @@
         document.addEventListener("DOMContentLoaded", () => {
             const bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
             
-            // Inisialisasi Grafik Arus Kas (Gabungan Bar & Line)
-const ctxArusKas = document.getElementById('chartArusKas').getContext('2d');
-new Chart(ctxArusKas, {
-    type: 'bar', // Tipe utama tetap bar
-    data: {
-        labels: bulanLabels,
-        datasets: [
+            // Inisialisasi Grafik Arus Kas (Modern Curved Line + Bar)
+            const ctxArusKas = document.getElementById('chartArusKas').getContext('2d');
+
+            // Buat efek gradasi warna transparan untuk area bawah garis
+            const gradDebit = ctxArusKas.createLinearGradient(0, 0, 0, 250);
+            gradDebit.addColorStop(0, 'rgba(16, 185, 129, 0.25)');
+            gradDebit.addColorStop(1, 'rgba(16, 185, 129, 0)');
+
+            const gradKredit = ctxArusKas.createLinearGradient(0, 0, 0, 250);
+            gradKredit.addColorStop(0, 'rgba(244, 63, 94, 0.25)');
+            gradKredit.addColorStop(1, 'rgba(244, 63, 94, 0)');
+
+            new Chart(ctxArusKas, {
+                type: 'bar',
+                data: {
+                    labels: bulanLabels,
+                    datasets: [
             {
                 label: 'Debit (Masuk)',
                 data: {!! json_encode(array_values($debitBulanan)) !!},
@@ -355,23 +365,27 @@ new Chart(ctxArusKas, {
             {
                 label: 'Tren Debit',
                 data: {!! json_encode(array_values($debitBulanan)) !!},
-                type: 'line', // Tambahkan dataset garis untuk tren debit
-                borderColor: '#059669',
-                backgroundColor: 'transparent',
-                borderWidth: 2,
-                tension: 0.3,
-                pointRadius: 4,
+                type: 'line',
+                borderColor: '#10b981',
+                backgroundColor: gradDebit,
+                fill: true,
+                borderWidth: 3,
+                tension: 0.4, // Membuat garis melengkung mulus
+                pointRadius: (ctx) => ctx.raw > 0 ? 4 : 0, // Sembunyikan titik jika nilainya 0
+                pointHoverRadius: 6,
                 order: 1
             },
             {
                 label: 'Tren Kredit',
                 data: {!! json_encode(array_values($kreditBulanan)) !!},
-                type: 'line', // Tambahkan dataset garis untuk tren kredit
-                borderColor: '#e11d48',
-                backgroundColor: 'transparent',
-                borderWidth: 2,
-                tension: 0.3,
-                pointRadius: 4,
+                type: 'line',
+                borderColor: '#f43f5e',
+                backgroundColor: gradKredit,
+                fill: true,
+                borderWidth: 3,
+                tension: 0.4,
+                pointRadius: (ctx) => ctx.raw > 0 ? 4 : 0,
+                pointHoverRadius: 6,
                 order: 1
             }
         ]
