@@ -331,43 +331,67 @@
         document.addEventListener("DOMContentLoaded", () => {
             const bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
             
-            // Inisialisasi Grafik Arus Kas
-            const ctxArusKas = document.getElementById('chartArusKas').getContext('2d');
-            new Chart(ctxArusKas, {
-                type: 'bar',
-                data: {
-                    labels: bulanLabels,
-                    datasets: [
-                        {
-                            label: 'Debit (Masuk)',
-                            data: {!! json_encode(array_values($debitBulanan)) !!},
-                            backgroundColor: '#10b981',
-                            borderRadius: 6,
-                        },
-                        {
-                            label: 'Kredit (Kasbon)',
-                            data: {!! json_encode(array_values($kreditBulanan)) !!},
-                            backgroundColor: '#f43f5e',
-                            borderRadius: 6,
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: (value) => 'Rp ' + value.toLocaleString('id-ID')
-                            }
-                        }
-                    }
+            // Inisialisasi Grafik Arus Kas (Gabungan Bar & Line)
+const ctxArusKas = document.getElementById('chartArusKas').getContext('2d');
+new Chart(ctxArusKas, {
+    type: 'bar', // Tipe utama tetap bar
+    data: {
+        labels: bulanLabels,
+        datasets: [
+            {
+                label: 'Debit (Masuk)',
+                data: {!! json_encode(array_values($debitBulanan)) !!},
+                backgroundColor: '#10b981',
+                borderRadius: 6,
+                order: 2
+            },
+            {
+                label: 'Kredit (Kasbon)',
+                data: {!! json_encode(array_values($kreditBulanan)) !!},
+                backgroundColor: '#f43f5e',
+                borderRadius: 6,
+                order: 2
+            },
+            {
+                label: 'Tren Debit',
+                data: {!! json_encode(array_values($debitBulanan)) !!},
+                type: 'line', // Tambahkan dataset garis untuk tren debit
+                borderColor: '#059669',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                tension: 0.3,
+                pointRadius: 4,
+                order: 1
+            },
+            {
+                label: 'Tren Kredit',
+                data: {!! json_encode(array_values($kreditBulanan)) !!},
+                type: 'line', // Tambahkan dataset garis untuk tren kredit
+                borderColor: '#e11d48',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                tension: 0.3,
+                pointRadius: 4,
+                order: 1
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: (value) => 'Rp ' + value.toLocaleString('id-ID')
                 }
-            });
+            }
+        }
+    }
+});
 
             // Inisialisasi Grafik Frekuensi Transaksi Bulanan
             const frekuensiDataObj = {!! json_encode($bulananData) !!};
