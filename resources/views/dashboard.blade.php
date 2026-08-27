@@ -145,7 +145,7 @@
                                 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
                             ];
                         @endphp
-                        <p class="text-xs text-slate-400 mb-4">Frekuensi per minggu (Bulan {{ $daftarBulan[$selectedBulan] ?? 'Ini' }})</p>
+                        <p class="text-xs text-slate-400 mb-4">Frekuensi per minggu Bulan {{ $daftarBulan[$selectedBulan] ?? 'Ini' }}</p>
                         <div class="h-56">
                             <canvas id="chartFrekuensi"></canvas>
                         </div>
