@@ -58,6 +58,6 @@ class TransaksiController extends Controller
             'saldo'     => $saldoBaru,
         ]);
 
-        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil disimpan!');
+        return back()->with('success', 'Transaksi berhasil disimpan!');
     }
 }
