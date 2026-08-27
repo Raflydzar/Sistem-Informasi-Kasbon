@@ -52,30 +52,31 @@ class DashboardController extends Controller
             ->groupBy('thn')->pluck('total', 'thn')->toArray();
 
         // 5. Filter Tabel Riwayat Kasbon
-        $query = Transaksi::query();
-        $filter = $request->get('filter', '1tahun');
+$query = Transaksi::query();
+$filter = $request->get('filter', '1tahun');
+$selectedBulan = (int) $request->get('bulan', date('n')); // 1 - 12
 
-        if ($filter === 'minggu') {
-            $query->where('tanggal', '>=', now()->subDays(6));
-        } elseif ($filter === 'bulan') {
-            $query->whereMonth('tanggal', date('m'))
-                  ->whereYear('tanggal', date('Y'));
-        } elseif ($filter === 'tahun') {
-            $query->whereYear('tanggal', date('Y'));
-        } else {
-            $query->where('tanggal', '>=', now()->subYear());
-        }
+if ($filter === 'minggu') {
+    $query->where('tanggal', '>=', now()->subDays(6));
+} elseif ($filter === 'bulan') {
+    $query->whereMonth('tanggal', $selectedBulan)
+          ->whereYear('tanggal', date('Y'));
+} elseif ($filter === 'tahun') {
+    $query->whereYear('tanggal', date('Y'));
+} else {
+    $query->where('tanggal', '>=', now()->subYear());
+}
 
-        $riwayatKasbon = $query->orderBy('tanggal', 'asc')
-            ->orderBy('id', 'asc')
-            ->paginate(10)
-            ->withQueryString();
+$riwayatKasbon = $query->orderBy('tanggal', 'asc')
+    ->orderBy('id', 'asc')
+    ->paginate(10)
+    ->withQueryString();
 
-        return view('dashboard', compact(
-            'saldoAwal', 'totalSaldo', 'totalDebit', 'totalKredit', 'jumlahKasbon', 'transaksiHariIni',
-            'debitBulanan', 'kreditBulanan', 'mingguanData', 'bulananData', 'tahunanData', 
-            'riwayatKasbon', 'filter'
-        ));
+return view('dashboard', compact(
+    'saldoAwal', 'tanggalSaldoAwal', 'totalSaldo', 'totalDebit', 'totalKredit', 'jumlahKasbon', 'transaksiHariIni',
+    'debitBulanan', 'kreditBulanan', 'mingguanData', 'bulananData', 'tahunanData', 
+    'riwayatKasbon', 'filter', 'selectedBulan'
+));
     }
 
     // Method untuk menyimpan / mengupdate nilai Saldo Awal

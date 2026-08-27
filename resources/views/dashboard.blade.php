@@ -157,25 +157,55 @@
                         <p class="text-xs text-slate-400 mt-0.5">Daftar transaksi berdasarkan rentang waktu terpilih.</p>
                     </div>
 
-                    <!-- Filter Rentang Waktu -->
-                    <div class="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-medium">
-                        <a href="{{ route('dashboard', ['filter' => 'minggu']) }}" 
-                           class="px-3 py-1.5 rounded-lg transition {{ $filter === 'minggu' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
-                            7 Hari
-                        </a>
-                        <a href="{{ route('dashboard', ['filter' => 'bulan']) }}" 
-                           class="px-3 py-1.5 rounded-lg transition {{ $filter === 'bulan' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
-                            Bulan Ini
-                        </a>
-                        <a href="{{ route('dashboard', ['filter' => 'tahun']) }}" 
-                           class="px-3 py-1.5 rounded-lg transition {{ $filter === 'tahun' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
-                            Tahun Ini
-                        </a>
-                        <a href="{{ route('dashboard', ['filter' => '1tahun']) }}" 
-                           class="px-3 py-1.5 rounded-lg transition {{ $filter === '1tahun' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
-                            1 Thn Terakhir
-                        </a>
-                    </div>
+                   <!-- Filter Rentang Waktu -->
+<div class="flex flex-wrap items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-medium">
+    
+    <!-- 7 Hari -->
+    <a href="{{ route('dashboard', ['filter' => 'minggu']) }}" 
+       class="px-3 py-1.5 rounded-lg transition {{ $filter === 'minggu' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
+        7 Hari
+    </a>
+
+    <!-- Dropdown Per Bulan -->
+    <div class="relative">
+        @php
+            $daftarBulan = [
+                1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+                5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+                9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+            ];
+        @endphp
+        <select onchange="window.location.href = this.value" 
+                class="appearance-none bg-transparent cursor-pointer pl-3 pr-7 py-1.5 rounded-lg transition border-0 text-xs font-medium focus:ring-0 focus:outline-none {{ $filter === 'bulan' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
+            <option value="" disabled {{ $filter !== 'bulan' ? 'selected' : '' }} class="dark:bg-slate-900 text-slate-400">
+                Pilih Bulan
+            </option>
+            @foreach($daftarBulan as $num => $nama)
+                <option value="{{ route('dashboard', ['filter' => 'bulan', 'bulan' => $num]) }}" 
+                        {{ $filter === 'bulan' && $selectedBulan === $num ? 'selected' : '' }}
+                        class="dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+                    {{ $nama }}
+                </option>
+            @endforeach
+        </select>
+        <!-- Ikon Panah Dropdown -->
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-slate-400">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+    </div>
+
+    <!-- Tahun Ini -->
+    <a href="{{ route('dashboard', ['filter' => 'tahun']) }}" 
+       class="px-3 py-1.5 rounded-lg transition {{ $filter === 'tahun' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
+        Tahun Ini
+    </a>
+
+    <!-- 1 Tahun Terakhir -->
+    <a href="{{ route('dashboard', ['filter' => '1tahun']) }}" 
+       class="px-3 py-1.5 rounded-lg transition {{ $filter === '1tahun' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-xs font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400' }}">
+        1 Tahun Terakhir
+    </a>
+</div>
                 </div>
 
                 <!-- Isi Tabel -->
