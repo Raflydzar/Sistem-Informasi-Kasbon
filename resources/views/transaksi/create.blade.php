@@ -43,6 +43,18 @@
                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
                     </div>
 
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Kategori Transaksi</label>
+                        <select name="kategori" required 
+                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                            <option value="kasbon" class="dark:bg-slate-900">Kasbon Karyawan</option>
+                            <option value="reimburse" class="dark:bg-slate-900">Reimburse</option>
+                            <option value="rtk" class="dark:bg-slate-900">Pembelian RTK (Rumah Tangga Kantor)</option>
+                            <option value="operasional" class="dark:bg-slate-900">Operasional (Tambal Ban, dll)</option>
+                            <option value="lainnya" class="dark:bg-slate-900">Lain-lain</option>
+                        </select>
+                    </div>
+
                     <!-- No Nota & Volume (L) -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
