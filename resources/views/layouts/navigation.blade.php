@@ -97,7 +97,7 @@
             
             <!-- Sidebar Header -->
             <div class="flex items-center justify-between px-6 h-16 border-b border-slate-200 dark:border-slate-800">
-                <span class="font-bold text-base text-slate-800 dark:text-slate-100 uppercase tracking-wider">Menu Navigasi</span>
+                <span class="font-bold text-base text-slate-800 dark:text-slate-100 uppercase tracking-wider">Sistem Informasi Transaksi</span>
                 <button @click="sidebarOpen = false" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
@@ -128,17 +128,17 @@
                     <!-- Submenu Kategori Transaksi -->
                     <div x-show="openTransaksi" x-transition class="pl-9 space-y-1">
                         <a href="{{ route('transaksi.index', ['kategori' => 'kasbon']) }}" class="block px-3 py-2 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                            📌 Data Kasbon
+                             Data Kasbon
                         </a>
                         <a href="{{ route('transaksi.index', ['kategori' => 'lainnya']) }}" class="block px-3 py-2 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                            📌 Transaksi Lain (Reimburse/RTK)
+                             Transaksi Lain (Reimburse/RTK)
                         </a>
                     </div>
                 </div>
 
                 <a href="{{ route('laporan.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('laporan.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    Laporan Keuangan
+                    Laporan
                 </a>
             </div>
 
