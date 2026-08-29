@@ -69,7 +69,7 @@
             
             <!-- Sidebar Header -->
             <div class="flex items-center justify-between px-6 h-16 border-b border-slate-200 dark:border-slate-800">
-                <span class="font-bold text-base text-slate-800 dark:text-slate-100 uppercase tracking-wider">Sistem Informasi Transaksi</span>
+                <span class="font-semibold text-base text-slate-800 dark:text-slate-100 uppercase tracking-wider">Sistem Informasi Transaksi</span>
                 <button @click="sidebarOpen = false" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
