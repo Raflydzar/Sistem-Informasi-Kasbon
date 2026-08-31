@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="{{ asset('coin.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('mci.png') }}">
     <title>Sistem Informasi Kasbon</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -11,7 +11,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        body { font-family: 'Instrument Sans', sans-serif; }
+        body { font-family: 'Open Sans', sans-serif; }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between p-6">
