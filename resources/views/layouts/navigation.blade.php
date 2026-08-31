@@ -4,34 +4,25 @@
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
+            
+            <!-- Sisi Kiri: Tombol Toggle & Logo Saja -->
             <div class="flex items-center gap-4">
                 <!-- Tombol Toggle Sidebar -->
-                <div class="flex items-center">
-                    <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-xl text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition focus:outline-none" title="Menu Sidebar">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
+                <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-xl text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition focus:outline-none" title="Menu Sidebar">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
 
-                <!-- Logo & Brand -->
-                <div class="shrink-0 flex items-center gap-3">
-                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
+                <!-- Logo -->
+                <div class="shrink-0 flex items-center">
+                    <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
-
-                <!-- Navigation Links (Desktop Atas) -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-6 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('unit.index')" :active="request()->routeIs('unit.*')">Unit</x-nav-link>
-                    <x-nav-link :href="route('laporan.index')" :active="request()->routeIs('laporan.*')">Laporan</x-nav-link>
-                </div>
             </div>
 
-            <!-- Tampilan Nama User di Kanan Atas -->
+            <!-- Sisi Kanan: Badge Nama User -->
             <div class="hidden sm:flex sm:items-center">
                 <button @click="sidebarOpen = true" class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition text-sm font-medium text-slate-700 dark:text-slate-200">
                     <div class="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
@@ -98,7 +89,7 @@
                     Manajemen Unit
                 </a>
 
-                <!-- Dropdown Jenis Transaksi (Kasbon, Petty Cash, Invoice Payment) -->
+                <!-- Dropdown Jenis Transaksi -->
                 <div x-data="{ openTransaksi: true }" class="space-y-1">
                     <button @click="openTransaksi = !openTransaksi" class="flex items-center justify-between w-full px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
                         <span class="flex items-center gap-3">
@@ -110,19 +101,16 @@
 
                     <!-- Submenu 3 Kategori Transaksi -->
                     <div x-show="openTransaksi" x-transition class="pl-9 space-y-1">
-                        <!-- 1. Kasbon -->
                         <a href="{{ route('transaksi.index', ['kategori_utama' => 'kasbon']) }}" 
                            class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium {{ request('kategori_utama', 'kasbon') === 'kasbon' && !request('kategori_utama') == false ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400 font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50' }}">
                             <span>1. Kasbon</span>
                         </a>
 
-                        <!-- 2. Petty Cash -->
                         <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash']) }}" 
                            class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium {{ request('kategori_utama') === 'petty_cash' ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400 font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50' }}">
                             <span>2. Petty Cash</span>
                         </a>
 
-                        <!-- 3. Invoice Payment (Disabled / Segera Hadir) -->
                         <div class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-slate-400 cursor-not-allowed opacity-60">
                             <span>3. Invoice Payment</span>
                             <span class="text-[9px] bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded font-mono">Soon</span>
@@ -158,17 +146,8 @@
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu (Mobile Hamburger bawaan) -->
+    <!-- Responsive Navigation Menu (Mobile View) -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('unit.index')" :active="request()->routeIs('unit.*')">Unit</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('laporan.index')" :active="request()->routeIs('laporan.*')">Laporan</x-responsive-nav-link>
-        </div>
-
-        <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
@@ -180,7 +159,6 @@
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
-                <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <x-responsive-nav-link :href="route('logout')"
