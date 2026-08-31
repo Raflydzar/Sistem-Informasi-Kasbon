@@ -90,7 +90,7 @@
                 </a>
 
                 <!-- Dropdown Jenis Transaksi -->
-                <div x-data="{ openTransaksi: true }" class="space-y-1">
+                <div x-data="{ openTransaksi: true, openPettyCash: true }" class="space-y-1">
                     <button @click="openTransaksi = !openTransaksi" class="flex items-center justify-between w-full px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
                         <span class="flex items-center gap-3">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012-2"/></svg>
@@ -99,18 +99,52 @@
                         <svg class="w-4 h-4 transition-transform" :class="openTransaksi ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
 
-                    <!-- Submenu 3 Kategori Transaksi -->
-                    <div x-show="openTransaksi" x-transition class="pl-9 space-y-1">
+                    <!-- Submenu Transaksi Utama -->
+                    <div x-show="openTransaksi" x-transition class="pl-6 space-y-1">
+                        <!-- 1. Kasbon -->
                         <a href="{{ route('transaksi.index', ['kategori_utama' => 'kasbon']) }}" 
-                           class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium {{ request('kategori_utama', 'kasbon') === 'kasbon' && !request('kategori_utama') == false ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400 font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50' }}">
+                           class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium {{ request('kategori_utama', 'kasbon') === 'kasbon' && !request('sub_kategori') ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400 font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50' }}">
                             <span>1. Kasbon</span>
                         </a>
 
-                        <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash']) }}" 
-                           class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium {{ request('kategori_utama') === 'petty_cash' ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400 font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50' }}">
-                            <span>2. Petty Cash</span>
-                        </a>
+                        <!-- 2. Petty Cash (Accordion Sub-Menu) -->
+                        <div>
+                            <button @click="openPettyCash = !openPettyCash" 
+                                    class="flex items-center justify-between w-full px-3 py-2 rounded-lg text-xs font-medium {{ request('kategori_utama') === 'petty_cash' ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50' }}">
+                                <span>2. Petty Cash</span>
+                                <svg class="w-3.5 h-3.5 transition-transform" :class="openPettyCash ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
 
+                            <!-- Daftar 7 Sub-Kategori Petty Cash -->
+                            <div x-show="openPettyCash" x-transition class="pl-3 mt-1 space-y-0.5 border-l-2 border-slate-100 dark:border-slate-800 ms-3">
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('kategori_utama') === 'petty_cash' && !request('sub_kategori') ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                                    • Semua Petty Cash
+                                </a>
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'building_material']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'building_material' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                                    • Building Material
+                                </a>
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'fuel']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'fuel' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                                    • Fuel (BBM)
+                                </a>
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'spare_part_vehicle']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'spare_part_vehicle' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                                    • Spare Part Vehicle
+                                </a>
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'electrical']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'electrical' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                                    • Electrical
+                                </a>
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'water']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'water' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                                    • Water
+                                </a>
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'office_equipment']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'office_equipment' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                                    • Office Equipment
+                                </a>
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'mess_equipment']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'mess_equipment' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
+                                    • Mess Equipment
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- 3. Invoice Payment (Disabled) -->
                         <div class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-slate-400 cursor-not-allowed opacity-60">
                             <span>3. Invoice Payment</span>
                             <span class="text-[9px] bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded font-mono">Soon</span>
