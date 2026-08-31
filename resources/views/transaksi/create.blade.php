@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-bold text-xl text-slate-800 dark:text-slate-100 leading-tight">
-            {{ $tipe === 'masuk' ? 'Pengisian Saldo Kas (Debit)' : 'Form Pengajuan Kasbon (Kredit)' }}
+            {{ $tipe === 'masuk' ? 'Pengisian Saldo Kas (Debit)' : 'Form Pengeluaran Kas (Kredit)' }}
         </h2>
     </x-slot>
 
@@ -9,68 +9,94 @@
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
                 
-                <form action="{{ route('transaksi.store') }}" method="POST" class="space-y-4">
+                <form action="{{ route('transaksi.store') }}" method="POST" 
+                      x-data="{ 
+                          kategoriUtama: '{{ $tipe === 'masuk' ? 'debit_kas' : 'kasbon' }}', 
+                          subKategori: '' 
+                      }" 
+                      class="space-y-4">
                     @csrf
                     
-                    <!-- Simpan otomatis tipe debit/kredit -->
+                    <!-- Simpan otomatis jenis debit/kredit -->
                     <input type="hidden" name="jenis" value="{{ $tipe === 'masuk' ? 'debit' : 'kredit' }}">
 
-                    <!-- Tanggal -->
+                    <!-- 1. Tanggal Transaksi -->
                     <div>
                         <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Tanggal</label>
                         <input type="date" name="tanggal" value="{{ date('Y-m-d') }}" required 
                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
                     </div>
 
-                    <!-- Pilih Unit (Khusus Kasbon/Kredit) -->
                     @if($tipe === 'keluar')
-                    <div>
-                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Pilih Unit</label>
-                        <select name="kode_unit" required 
-                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
-                            <option value="" class="dark:bg-slate-900">-- Pilih Unit --</option>
-                            @foreach($units as $u)
-                                <option value="{{ $u->kode_unit }}" class="dark:bg-slate-900">{{ $u->kode_unit }} - {{ $u->nama_unit }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                        <!-- 2. Jenis Transaksi Utama -->
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Jenis Transaksi</label>
+                            <select name="kategori_utama" x-model="kategoriUtama" required 
+                                    class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+                                <option value="kasbon" class="dark:bg-slate-900">1. Kasbon</option>
+                                <option value="petty_cash" class="dark:bg-slate-900">2. Petty Cash</option>
+                                <option value="invoice_payment" disabled class="dark:bg-slate-900 text-slate-400 bg-slate-50 dark:bg-slate-800/50">3. Invoice Payment (Segera Hadir)</option>
+                            </select>
+                        </div>
+
+                        <!-- 3. Sub-Kategori Petty Cash (Hanya Tampil Jika Memilih Petty Cash) -->
+                        <div x-show="kategoriUtama === 'petty_cash'" x-cloak x-transition>
+                            <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Kategori Petty Cash</label>
+                            <select name="sub_kategori" x-model="subKategori" :required="kategoriUtama === 'petty_cash'"
+                                    class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+                                <option value="" disabled selected class="dark:bg-slate-900">-- Pilih Sub-Kategori --</option>
+                                <option value="building_material" class="dark:bg-slate-900">Building Material (Material/Bangunan)</option>
+                                <option value="fuel" class="dark:bg-slate-900">Fuel (BBM Unit)</option>
+                                <option value="spare_part_vehicle" class="dark:bg-slate-900">Spare Part Vehicle (Suku Cadang Unit)</option>
+                                <option value="electrical" class="dark:bg-slate-900">Electrical (Kelistrikan)</option>
+                                <option value="water" class="dark:bg-slate-900">Water (Air Bersih/Konsumsi)</option>
+                                <option value="office_equipment" class="dark:bg-slate-900">Office Equipment (Peralatan Kantor)</option>
+                                <option value="mess_equipment" class="dark:bg-slate-900">Mess Equipment (Peralatan Mess)</option>
+                            </select>
+                        </div>
+
+                        <!-- 4. Pilih Unit (Otomatis Muncul untuk Kasbon, Fuel, dan Spare Part Vehicle) -->
+                        <div x-show="kategoriUtama === 'kasbon' || subKategori === 'fuel' || subKategori === 'spare_part_vehicle'" x-cloak x-transition>
+                            <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">
+                                Unit Terkait <span x-show="kategoriUtama === 'kasbon' || subKategori === 'fuel' || subKategori === 'spare_part_vehicle'" class="text-rose-500">*</span>
+                            </label>
+                            <select name="kode_unit" 
+                                    :required="kategoriUtama === 'kasbon' || subKategori === 'fuel' || subKategori === 'spare_part_vehicle'"
+                                    class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+                                <option value="" class="dark:bg-slate-900">-- Pilih Unit --</option>
+                                @foreach($units as $u)
+                                    <option value="{{ $u->kode_unit }}" class="dark:bg-slate-900">{{ $u->kode_unit }} - {{ $u->nama_unit }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @else
+                        <!-- Kategori Otomatis untuk Transaksi Masuk (Debit) -->
+                        <input type="hidden" name="kategori_utama" value="debit_kas">
                     @endif
 
-                    <!-- Deskripsi -->
+                    <!-- 5. Deskripsi Transaksi -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Deskripsi / Keperluan</label>
-                        <input type="text" name="deskripsi" placeholder="{{ $tipe === 'masuk' ? 'Contoh: Pengisian Kas Operasional' : 'Contoh: BBM - NAMA' }}" required 
+                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Deskripsi / Keterangan</label>
+                        <input type="text" name="deskripsi" placeholder="{{ $tipe === 'masuk' ? 'Contoh: Pengisian Kas Awal' : 'Contoh: Pembelian Semen / Solar Unit DT-01' }}" required 
                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Kategori Transaksi</label>
-                        <select name="kategori" required 
-                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
-                            <option value="kasbon" class="dark:bg-slate-900">Kasbon Karyawan</option>
-                            <option value="reimburse" class="dark:bg-slate-900">Reimburse</option>
-                            <option value="rtk" class="dark:bg-slate-900">Pembelian RTK (Rumah Tangga Kantor)</option>
-                            <option value="operasional" class="dark:bg-slate-900">Operasional (Tambal Ban, dll)</option>
-                            <option value="lainnya" class="dark:bg-slate-900">Lain-lain</option>
-                        </select>
-                    </div>
-
-                    <!-- No Nota & Volume (L) -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- 6. No Nota & Volume Liter (Volume Khusus BBM / Fuel) -->
+                    <div class="grid grid-cols-1" :class="subKategori === 'fuel' ? 'sm:grid-cols-2 gap-4' : ''">
                         <div>
                             <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">No. Nota (Opsional)</label>
                             <input type="text" name="no_nota" placeholder="Contoh: NT-001" 
                                    class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Volume Liter (Opsional)</label>
+                        <div x-show="subKategori === 'fuel'" x-cloak x-transition>
+                            <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Volume (Liter)</label>
                             <input type="number" step="0.01" name="volume" placeholder="Contoh: 15.5" 
                                    class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
                         </div>
                     </div>
 
-                    <!-- Nominal -->
+                    <!-- 7. Nominal (Rp) dengan Pemisah Titik Ribuan -->
                     <div>
                         <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Nominal (Rp)</label>
                         <input type="text" id="nominal_display" placeholder="Contoh: 250.000" required 
@@ -78,7 +104,7 @@
                         <input type="hidden" name="nominal" id="nominal_real">
                     </div>
 
-                    <!-- Tombol Aksi -->
+                    <!-- 8. Tombol Aksi -->
                     <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
                         <a href="{{ route('dashboard') }}" class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 transition">
                             Batal
@@ -94,6 +120,7 @@
         </div>
     </div>
 
+    <!-- Script Formatter Nominal Rupiah -->
     <script>
         const displayInput = document.getElementById('nominal_display');
         const realInput = document.getElementById('nominal_real');
