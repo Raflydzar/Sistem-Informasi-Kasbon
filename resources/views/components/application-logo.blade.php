@@ -1,1 +1,1 @@
-<img src="{{ asset('mcii.png') }}" {{ $attributes->merge(['class' => 'w-20 h-20 object-contain']) }} alt="Logo">
+<img src="{{ asset('mci.png') }}" {{ $attributes->merge(['class' => 'w-20 h-20 object-contain']) }} alt="Logo">
