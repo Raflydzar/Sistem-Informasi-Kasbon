@@ -8,7 +8,7 @@ class Transaksi extends Model
 {
     protected $fillable = [
         'kas_id', 'unit_id','tanggal',
-        'deskripsi','no_nota','volume','kode_unit','jenis','nominal', 'saldo'
+        'deskripsi','no_nota','volume','kode_unit','jenis','nominal', 'saldo','kategori_utama','sub_kategori'
     ];
     public function kas()
     {

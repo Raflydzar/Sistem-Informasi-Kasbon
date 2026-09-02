@@ -123,54 +123,79 @@
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
-                        <thead class="bg-slate-50/75 dark:bg-slate-800/50 text-xs font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800">
+                       <!-- Bagian thead -->
+                        <thead class="bg-slate-50/50 dark:bg-slate-800/50 border-y border-slate-200 dark:border-slate-800">
                             <tr>
-                                <th class="px-5 py-3.5">Tanggal</th>
-                                <th class="px-5 py-3.5">Deskripsi</th>
-                                <th class="px-5 py-3.5">Nota</th>
-                                <th class="px-5 py-3.5 text-center">Volume</th>
-                                <th class="px-5 py-3.5">Kode Unit</th>
-                                <th class="px-5 py-3.5 text-right">Debit</th>
-                                <th class="px-5 py-3.5 text-right">Kredit</th>
-                                <th class="px-5 py-3.5 text-right">Saldo</th>
+                                <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs w-24">Tgl</th>
+                                <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">Kategori</th>
+                                <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs hidden md:table-cell w-32">Nota</th>
+        
+                        <!-- Kondisi untuk Header Unit -->
+                        @if(in_array($subKategori, ['fuel', 'spare_part_vehicle']) || $kategoriUtama === 'kasbon' || !$kategoriUtama)
+                                <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs hidden sm:table-cell w-28">Unit</th>
+                        @endif
+
+                                <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">Deskripsi</th>
+        
+                        <!-- Kondisi untuk Header Volume -->
+                        @if($subKategori === 'fuel' || (!$subKategori && $kategoriUtama === 'petty_cash'))
+                                <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs hidden sm:table-cell w-20 text-center">Vol (L)</th>
+                        @endif
+
+                                <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs text-right w-36">Nominal</th>
+                                <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs text-right w-36">Saldo Kas</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                            @forelse($transaksis as $item)
-                                <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition">
-                                    <td class="px-5 py-4 whitespace-nowrap text-xs text-slate-500">
-                                        {{ date('d/m/Y', strtotime($item->tanggal)) }}
-                                    </td>
-                                    <td class="px-5 py-4 uppercase font-medium text-slate-800 dark:text-slate-200">
-                                        {{ $item->deskripsi }}
-                                    </td>
-                                    <td class="px-5 py-4 whitespace-nowrap font-mono text-xs text-slate-500">
-                                        {{ $item->no_nota ?? '-' }}
-                                    </td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-center text-xs text-slate-500">
-                                        {{ $item->volume ? $item->volume . ' L' : '-' }}
-                                    </td>
-                                    <td class="px-5 py-4 whitespace-nowrap font-mono text-xs text-slate-500">
-                                        {{ $item->kode_unit }}
-                                    </td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-right font-semibold text-emerald-600 dark:text-emerald-400">
-                                        {{ $item->jenis == 'debit' ? '+ Rp '.number_format($item->nominal, 0, ',', '.') : '-' }}
-                                    </td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-right font-semibold text-rose-600 dark:text-rose-400">
-                                        {{ $item->jenis == 'kredit' ? '- Rp '.number_format($item->nominal, 0, ',', '.') : '-' }}
-                                    </td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-right font-bold text-slate-900 dark:text-slate-100">
-                                        Rp {{ number_format($item->saldo, 0, ',', '.') }}
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="8" class="px-5 py-10 text-center text-slate-400 text-sm">
-                                        Belum ada transaksi yang tercatat.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
+
+                    <!-- Bagian dalam loop foreach transaksis di tbody -->
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
+                        @foreach($transaksis as $t)
+                            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                                <td class="px-4 py-3 text-xs text-slate-600 dark:text-slate-400 whitespace-nowrap">
+                        {{ \Carbon\Carbon::parse($t->tanggal)->format('d M y') }}
+                                </td>
+                                <td class="px-4 py-3 text-xs">
+                    <!-- Menampilkan Kategori/Sub-Kategori secara rapi -->
+                        @if($t->kategori_utama == 'debit_kas')
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Isi Saldo</span>
+                        @else
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-500/20">
+                        {{ ucwords(str_replace('_', ' ', $t->sub_kategori ?? $t->kategori_utama)) }}
+                        </span>
+                        @endif
+                                </td>
+                                <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-400 hidden md:table-cell font-mono">{{ $t->no_nota }}</td>
+        
+                    <!-- Kondisi untuk Isi Kolom Unit -->
+                        @if(in_array($subKategori, ['fuel', 'spare_part_vehicle']) || $kategoriUtama === 'kasbon' || !$kategoriUtama)
+                                <td class="px-4 py-3 text-xs hidden sm:table-cell">
+                        @if($t->kode_unit && $t->kode_unit !== '-')
+                    <span class="font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">{{ $t->kode_unit }}</span>
+                    @else
+                    <span class="text-slate-400">-</span>
+                    @endif
+                                </td>
+                    @endif
+
+                                <td class="px-4 py-3 text-sm text-slate-800 dark:text-slate-200">{{ $t->deskripsi }}</td>
+        
+        <!-- Kondisi untuk Isi Kolom Volume -->
+        @if($subKategori === 'fuel' || (!$subKategori && $kategoriUtama === 'petty_cash'))
+            <td class="px-4 py-3 text-xs hidden sm:table-cell text-center text-slate-500 dark:text-slate-400">
+                {{ $t->volume ? number_format($t->volume, 1) . ' L' : '-' }}
+            </td>
+        @endif
+
+        <!-- Nominal & Saldo (Sama seperti sebelumnya) -->
+        <td class="px-4 py-3 text-sm font-medium text-right {{ $t->jenis == 'debit' ? 'text-emerald-600' : 'text-rose-600' }}">
+            {{ $t->jenis == 'debit' ? '+' : '-' }}Rp {{ number_format($t->nominal, 0, ',', '.') }}
+        </td>
+        <td class="px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 text-right">
+            Rp {{ number_format($t->saldo, 0, ',', '.') }}
+        </td>
+    </tr>
+    @endforeach
+</tbody>
                     </table>
                 </div>
             </div>
