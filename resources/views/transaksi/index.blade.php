@@ -6,7 +6,7 @@
                     @if($kategoriUtama === 'kasbon')
                         Data Transaksi Kasbon
                     @elseif($kategoriUtama === 'petty_cash')
-                        Petty Cash {{ $subKategori ? '• ' . ucwords(str_replace('_', ' ', $subKategori)) : '• Semua' }}
+                        Petty Cash {{ $subKategori ? ' | ' . ucwords(str_replace('_', ' ', $subKategori)) : '• Semua' }}
                     @else
                         Pencatatan Transaksi
                     @endif
