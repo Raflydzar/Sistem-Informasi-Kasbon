@@ -118,28 +118,28 @@
                             <!-- Daftar 7 Sub-Kategori Petty Cash -->
                             <div x-show="openPettyCash" x-transition class="pl-3 mt-1 space-y-0.5 border-l-2 border-slate-100 dark:border-slate-800 ms-3">
                                 <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('kategori_utama') === 'petty_cash' && !request('sub_kategori') ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    • Semua Petty Cash
+                                    Semua Petty Cash
                                 </a>
                                 <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'building_material']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'building_material' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    • Building Material
+                                    Building Material
                                 </a>
                                 <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'fuel']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'fuel' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    • Fuel (BBM)
+                                    Fuel (BBM)
                                 </a>
                                 <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'spare_part_vehicle']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'spare_part_vehicle' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    • Spare Part Vehicle
+                                    Spare Part Vehicle
                                 </a>
                                 <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'electrical']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'electrical' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    • Electrical
+                                    Electrical
                                 </a>
                                 <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'water']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'water' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    • Water
+                                    Water
                                 </a>
                                 <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'office_equipment']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'office_equipment' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    • Office Equipment
+                                    Office Equipment
                                 </a>
                                 <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'mess_equipment']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'mess_equipment' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    • Mess Equipment
+                                    Mess Equipment
                                 </a>
                             </div>
                         </div>
