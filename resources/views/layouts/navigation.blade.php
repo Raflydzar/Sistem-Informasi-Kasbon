@@ -70,82 +70,113 @@
             <!-- Sidebar Header -->
             <div class="flex items-center justify-between px-6 h-16 border-b border-slate-200 dark:border-slate-800">
                 <span class="font-semibold text-base text-slate-800 dark:text-slate-100 tracking-wider">Sistem Informasi Transaksi</span>
-                <button @click="sidebarOpen = false" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                <button @click="sidebarOpen = false" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
 
             <!-- Sidebar Content / Links -->
-            <div class="flex-1 overflow-y-auto px-4 py-4 space-y-2">
+            <div class="flex-1 overflow-y-auto px-4 py-4 space-y-1.5">
                 <!-- Dashboard -->
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400 font-semibold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     Dashboard
                 </a>
 
                 <!-- Manajemen Unit -->
-                <a href="{{ route('unit.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('unit.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+                <a href="{{ route('unit.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('unit.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400 font-semibold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                     Manajemen Unit
                 </a>
 
                 <!-- Dropdown Jenis Transaksi -->
-                <div x-data="{ openTransaksi: true, openPettyCash: true }" class="space-y-1">
-                    <button @click="openTransaksi = !openTransaksi" class="flex items-center justify-between w-full px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                <div x-data="{ openTransaksi: true, openPettyCash: true }" class="space-y-1 pt-1">
+                    <button @click="openTransaksi = !openTransaksi" class="flex items-center justify-between w-full px-4 py-2.5 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
                         <span class="flex items-center gap-3">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012-2"/></svg>
                             Jenis Transaksi
                         </span>
-                        <svg class="w-4 h-4 transition-transform" :class="openTransaksi ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        <svg class="w-4 h-4 transition-transform duration-200" :class="openTransaksi ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
 
                     <!-- Submenu Transaksi Utama -->
-                    <div x-show="openTransaksi" x-transition class="pl-6 space-y-1">
+                    <div x-show="openTransaksi" x-transition class="pl-4 space-y-1">
                         <!-- 1. Kasbon -->
                         <a href="{{ route('transaksi.index', ['kategori_utama' => 'kasbon']) }}" 
-                           class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium {{ request('kategori_utama', 'kasbon') === 'kasbon' && !request('sub_kategori') ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400 font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50' }}">
+                           class="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition {{ request('kategori_utama', 'kasbon') === 'kasbon' && !request('sub_kategori') ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
                             <span>1. Kasbon</span>
                         </a>
 
                         <!-- 2. Petty Cash (Accordion Sub-Menu) -->
-                        <div>
+                        <div class="space-y-1">
                             <button @click="openPettyCash = !openPettyCash" 
-                                    class="flex items-center justify-between w-full px-3 py-2 rounded-lg text-xs font-medium {{ request('kategori_utama') === 'petty_cash' ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50' }}">
+                                    class="flex items-center justify-between w-full px-3 py-2 rounded-xl text-xs font-semibold transition {{ request('kategori_utama') === 'petty_cash' ? 'text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-950/30' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
                                 <span>2. Petty Cash</span>
-                                <svg class="w-3.5 h-3.5 transition-transform" :class="openPettyCash ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                <svg class="w-3.5 h-3.5 transition-transform duration-200" :class="openPettyCash ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                             </button>
 
                             <!-- Daftar 7 Sub-Kategori Petty Cash -->
-                            <div x-show="openPettyCash" x-transition class="pl-3 mt-1 space-y-0.5 border-l-2 border-slate-100 dark:border-slate-800 ms-3">
-                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('kategori_utama') === 'petty_cash' && !request('sub_kategori') ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    Semua Petty Cash
+                            <div x-show="openPettyCash" x-transition class="pl-3 mt-1 space-y-0.5 border-l-2 border-slate-200 dark:border-slate-700 ms-3.5">
+                                <!-- Semua Petty Cash -->
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash']) }}" 
+                                   class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition {{ request('kategori_utama') === 'petty_cash' && !request('sub_kategori') ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60' }}">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ request('kategori_utama') === 'petty_cash' && !request('sub_kategori') ? 'bg-blue-600 dark:bg-blue-400' : 'bg-slate-300 dark:bg-slate-600' }}"></span>
+                                    <span>Semua Petty Cash</span>
                                 </a>
-                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'building_material']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'building_material' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    Building Material
+
+                                <!-- Building Material -->
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'building_material']) }}" 
+                                   class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition {{ request('sub_kategori') === 'building_material' ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60' }}">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ request('sub_kategori') === 'building_material' ? 'bg-blue-600 dark:bg-blue-400' : 'bg-slate-300 dark:bg-slate-600' }}"></span>
+                                    <span>Building Material</span>
                                 </a>
-                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'fuel']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'fuel' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    Fuel (BBM)
+
+                                <!-- Fuel (BBM) -->
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'fuel']) }}" 
+                                   class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition {{ request('sub_kategori') === 'fuel' ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60' }}">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ request('sub_kategori') === 'fuel' ? 'bg-blue-600 dark:bg-blue-400' : 'bg-slate-300 dark:bg-slate-600' }}"></span>
+                                    <span>Fuel (BBM)</span>
                                 </a>
-                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'spare_part_vehicle']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'spare_part_vehicle' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    Spare Part Vehicle
+
+                                <!-- Spare Part Vehicle -->
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'spare_part_vehicle']) }}" 
+                                   class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition {{ request('sub_kategori') === 'spare_part_vehicle' ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60' }}">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ request('sub_kategori') === 'spare_part_vehicle' ? 'bg-blue-600 dark:bg-blue-400' : 'bg-slate-300 dark:bg-slate-600' }}"></span>
+                                    <span>Spare Part Vehicle</span>
                                 </a>
-                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'electrical']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'electrical' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    Electrical
+
+                                <!-- Electrical -->
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'electrical']) }}" 
+                                   class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition {{ request('sub_kategori') === 'electrical' ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60' }}">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ request('sub_kategori') === 'electrical' ? 'bg-blue-600 dark:bg-blue-400' : 'bg-slate-300 dark:bg-slate-600' }}"></span>
+                                    <span>Electrical</span>
                                 </a>
-                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'water']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'water' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    Water
+
+                                <!-- Water -->
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'water']) }}" 
+                                   class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition {{ request('sub_kategori') === 'water' ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60' }}">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ request('sub_kategori') === 'water' ? 'bg-blue-600 dark:bg-blue-400' : 'bg-slate-300 dark:bg-slate-600' }}"></span>
+                                    <span>Water</span>
                                 </a>
-                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'office_equipment']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'office_equipment' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    Office Equipment
+
+                                <!-- Office Equipment -->
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'office_equipment']) }}" 
+                                   class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition {{ request('sub_kategori') === 'office_equipment' ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60' }}">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ request('sub_kategori') === 'office_equipment' ? 'bg-blue-600 dark:bg-blue-400' : 'bg-slate-300 dark:bg-slate-600' }}"></span>
+                                    <span>Office Equipment</span>
                                 </a>
-                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'mess_equipment']) }}" class="block px-2.5 py-1.5 rounded text-[11px] {{ request('sub_kategori') === 'mess_equipment' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200' }}">
-                                    Mess Equipment
+
+                                <!-- Mess Equipment -->
+                                <a href="{{ route('transaksi.index', ['kategori_utama' => 'petty_cash', 'sub_kategori' => 'mess_equipment']) }}" 
+                                   class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition {{ request('sub_kategori') === 'mess_equipment' ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60' }}">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ request('sub_kategori') === 'mess_equipment' ? 'bg-blue-600 dark:bg-blue-400' : 'bg-slate-300 dark:bg-slate-600' }}"></span>
+                                    <span>Mess Equipment</span>
                                 </a>
                             </div>
                         </div>
 
                         <!-- 3. Invoice Payment (Disabled) -->
-                        <div class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-slate-400 cursor-not-allowed opacity-60">
+                        <div class="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-400 cursor-not-allowed opacity-60">
                             <span>3. Invoice Payment</span>
                             <span class="text-[9px] bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded font-mono">Soon</span>
                         </div>
@@ -153,7 +184,7 @@
                 </div>
 
                 <!-- Laporan Keuangan -->
-                <a href="{{ route('laporan.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('laporan.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+                <a href="{{ route('laporan.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('laporan.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400 font-semibold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     Laporan
                 </a>
@@ -166,7 +197,7 @@
                     <p class="text-xs text-slate-400 truncate">{{ Auth::user()->email }}</p>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
-                    <a href="{{ route('profile.edit') }}" class="text-center px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-xl hover:bg-slate-200 transition">
+                    <a href="{{ route('profile.edit') }}" class="text-center px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition">
                         Profile
                     </a>
                     <form method="POST" action="{{ route('logout') }}">
