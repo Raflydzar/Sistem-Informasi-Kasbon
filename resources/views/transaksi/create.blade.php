@@ -87,9 +87,18 @@
                                    class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
                         </div>
 
-                        <div x-show="subKategori === 'fuel'" x-cloak x-transition>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Volume (Liter) <span class="text-rose-500">*</span></label>
-                            <input type="number" step="0.01" name="volume" placeholder="Contoh: 15.5" :required="subKategori === 'fuel'"
+                        <!-- Input Fleksibel: Volume (Liter) atau Jumlah (Qty) -->
+                        <div x-show="subKategori === 'fuel' || subKategori === 'building_material' || subKategori === 'electrical'" x-cloak x-transition>
+                            <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">
+                                <span x-text="subKategori === 'fuel' ? 'Volume (Liter)' : 'Jumlah / Qty'"></span>
+                                <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="number" 
+                                   :step="subKategori === 'fuel' ? '0.01' : '1'" 
+                                   :min="subKategori === 'fuel' ? '0.01' : '1'" 
+                                   name="volume" 
+                                   :placeholder="subKategori === 'fuel' ? 'Contoh: 15.5' : 'Contoh: 10'" 
+                                   :required="subKategori === 'fuel' || subKategori === 'building_material' || subKategori === 'electrical'"
                                    class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
                         </div>
                     </div>

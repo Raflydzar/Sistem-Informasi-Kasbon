@@ -86,8 +86,10 @@
                                 <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">Deskripsi</th>
 
                                 <!-- Kolom Volume: Muncul untuk Fuel -->
-                                @if($subKategori === 'fuel' || (!$subKategori && $kategoriUtama === 'petty_cash'))
-                                    <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs hidden sm:table-cell w-20 text-center">Vol (L)</th>
+                                @if(in_array($subKategori, ['fuel', 'building_material', 'electrical']) || (!$subKategori && $kategoriUtama === 'petty_cash'))
+                                    <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs hidden sm:table-cell w-24 text-center">
+                                {{ $subKategori === 'fuel' ? 'Vol (L)' : 'Qty' }}
+                                    </th>
                                 @endif
 
                                 <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs text-right w-36">Nominal</th>
@@ -129,15 +131,19 @@
                                         </td>
                                     @endif
 
-                                    <td class="px-4 py-3 text-sm text-slate-800 dark:text-slate-200">
+                                        <td class="px-4 py-3 text-sm text-slate-800 dark:text-slate-200">
                                         {{ $t->deskripsi }}
-                                    </td>
+                                        </td>
 
                                     <!-- Isi Kolom Volume -->
-                                    @if($subKategori === 'fuel' || (!$subKategori && $kategoriUtama === 'petty_cash'))
-                                        <td class="px-4 py-3 text-xs hidden sm:table-cell text-center text-slate-500 dark:text-slate-400 whitespace-nowrap">
-                                            {{ $t->volume ? number_format($t->volume, 1) . ' L' : '-' }}
-                                        </td>
+                                    @if(in_array($subKategori, ['fuel', 'building_material', 'electrical']) || (!$subKategori && $kategoriUtama === 'petty_cash'))
+                                        <td class="px-4 py-3 text-xs hidden sm:table-cell text-center text-slate-600 dark:text-slate-300 whitespace-nowrap font-medium">
+                                    @if($t->volume)
+                                    {{ $t->sub_kategori === 'fuel' ? number_format($t->volume, 1) . ' L' : number_format($t->volume, 0) . ' Pcs' }}
+                                    @else
+                                      -
+                                    @endif
+                                    </td>
                                     @endif
 
                                     <!-- Nominal -->
