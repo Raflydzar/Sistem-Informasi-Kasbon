@@ -111,6 +111,19 @@ class TransaksiController extends Controller
             'saldo'          => $saldoBaru,
         ]);
 
+        // 2. Hitung ulang seluruh saldo berjalan dari transaksi paling awal ke akhir
+            $runningBalance = 0;
+            $allTransaksis = Transaksi::orderBy('tanggal', 'asc')->orderBy('id', 'asc')->get();
+
+                foreach ($allTransaksis as $t) {
+                 if ($t->jenis === 'debit') {
+            $runningBalance += $t->nominal;
+        } else {
+            $runningBalance -= $t->nominal;
+        }
+            $t->update(['saldo' => $runningBalance]);
+    }
+
         return redirect()->route('dashboard')->with('success', 'Transaksi berhasil disimpan!');
     }
 }
