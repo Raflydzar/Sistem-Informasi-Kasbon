@@ -40,7 +40,7 @@
 
                         <!-- 2. Sub-Kategori Petty Cash -->
                         <div x-show="kategoriUtama === 'petty_cash'" x-cloak x-transition>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Kategori Petty Cash</label>
+                            <label class="block text-xs font-normal uppercase text-slate-500 dark:text-slate-400 mb-1.5">Kategori Petty Cash</label>
                             <select name="sub_kategori" x-model="subKategori" :required="kategoriUtama === 'petty_cash'"
                                     class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
                                 <option value="" disabled selected class="dark:bg-slate-900">-- Pilih Sub-Kategori --</option>
