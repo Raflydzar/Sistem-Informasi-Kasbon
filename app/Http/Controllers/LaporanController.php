@@ -16,11 +16,24 @@ class LaporanController extends Controller
         $tglAwal = $request->get('tgl_awal', now()->startOfMonth()->toDateString());
         $tglAkhir = $request->get('tgl_akhir', now()->toDateString());
         $kodeUnit = $request->get('kode_unit');
+        $kategoriUtama = $request->get('kategori_utama');
+        $subKategori = $request->get('sub_kategori');
 
         $query = Transaksi::whereBetween('tanggal', [$tglAwal, $tglAkhir]);
 
+        // Filter Unit
         if ($kodeUnit) {
             $query->where('kode_unit', $kodeUnit);
+        }
+
+        // Filter Kategori Utama (Kasbon / Petty Cash)
+        if ($kategoriUtama) {
+            $query->where('kategori_utama', $kategoriUtama);
+        }
+
+        // Filter Sub-Kategori Petty Cash
+        if ($subKategori) {
+            $query->where('sub_kategori', $subKategori);
         }
 
         $transaksis = $query->orderBy('tanggal', 'asc')->orderBy('id', 'asc')->get();
@@ -31,6 +44,7 @@ class LaporanController extends Controller
 
         return view('laporan.index', compact(
             'transaksis', 'units', 'tglAwal', 'tglAkhir', 'kodeUnit', 
+            'kategoriUtama', 'subKategori',
             'totalDebit', 'totalKredit', 'selisih'
         ));
     }
@@ -40,6 +54,8 @@ class LaporanController extends Controller
         $tglAwal = $request->get('tgl_awal', now()->startOfMonth()->toDateString());
         $tglAkhir = $request->get('tgl_akhir', now()->toDateString());
         $kodeUnit = $request->get('kode_unit');
+        $kategoriUtama = $request->get('kategori_utama');
+        $subKategori = $request->get('sub_kategori');
 
         // 1. Hitung Saldo Awal sebelum periode filter
         $saldoAwal = Transaksi::whereDate('tanggal', '<', $tglAwal)
@@ -47,11 +63,18 @@ class LaporanController extends Controller
             ->value('total') ?? 0;
 
         $query = Transaksi::query();
+        
         if ($tglAwal && $tglAkhir) {
             $query->whereDate('tanggal', '>=', $tglAwal)->whereDate('tanggal', '<=', $tglAkhir);
         }
         if ($kodeUnit) {
             $query->where('kode_unit', $kodeUnit);
+        }
+        if ($kategoriUtama) {
+            $query->where('kategori_utama', $kategoriUtama);
+        }
+        if ($subKategori) {
+            $query->where('sub_kategori', $subKategori);
         }
 
         $transaksis = $query->orderBy('tanggal', 'asc')->orderBy('id', 'asc')->get();
@@ -84,9 +107,12 @@ class LaporanController extends Controller
 
         $pdf = Pdf::loadView('laporan.pdf', compact(
             'transaksis', 'tglAwal', 'tglAkhir', 'kodeUnit', 
+            'kategoriUtama', 'subKategori',
             'saldoAwal', 'saldoAwalHeader', 'totalDebit', 'totalKredit', 'saldoAkhir'
         ))->setPaper('a4', 'portrait');
         
-        return $pdf->stream('Laporan_Kasbon_' . $tglAwal . '_s_d_' . $tglAkhir . '.pdf');
+        $namaFile = 'Laporan_Transaksi_' . ($kategoriUtama ?? 'Semua') . '_' . $tglAwal . '_sd_' . $tglAkhir . '.pdf';
+
+        return $pdf->stream($namaFile);
     }
 }
