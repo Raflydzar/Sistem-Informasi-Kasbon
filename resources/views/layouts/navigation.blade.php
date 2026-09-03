@@ -1,5 +1,3 @@
-@php use Illuminate\Support\Facades\Auth; @endphp
-
 <nav x-data="{ open: false, sidebarOpen: false }" class="bg-white border-b border-gray-100 dark:bg-slate-900 dark:border-slate-800 sticky top-0 z-50 shadow-sm">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,12 +21,12 @@
             </div>
 
             <!-- Sisi Kanan: Badge Nama User -->
-            <div class="hidden sm:flex sm:items-center">
+            <div class="flex sm:items-center">
                 <button @click="sidebarOpen = true" class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition text-sm font-medium text-slate-700 dark:text-slate-200">
                     <div class="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
                         {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                     </div>
-                    <span>{{ Auth::user()->name }}</span>
+                    <span class="hidden sm:inline-block">{{ Auth::user()->name }}</span>
                 </button>
             </div>
 
