@@ -36,7 +36,7 @@
                     <a href="{{ route('transaksi.create', ['tipe' => 'keluar']) }}" 
                        class="inline-flex items-center px-4 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-xl transition shadow-sm shadow-blue-500/20">
                         <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4m8-8v16"/></svg>
-                        Ajukan Kasbon
+                        Ajukan Transaksi
                     </a>
                 </div>
             </div>
@@ -95,7 +95,7 @@
 
                 <!-- Pengajuan Kasbon -->
                 <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Kasbon</span>
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Transaksi</span>
                     <div>
                         <p class="text-lg font-bold tracking-tight text-amber-600 dark:text-amber-400 mt-2">
                             {{ $jumlahKasbon }} <span class="text-xs font-normal text-slate-400">Trx</span>

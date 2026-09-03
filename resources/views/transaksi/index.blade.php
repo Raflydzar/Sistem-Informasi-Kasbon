@@ -5,7 +5,7 @@
                 <!-- Judul Halaman Dinamis -->
                 <h2 class="font-bold text-xl text-slate-800 dark:text-slate-100 leading-tight">
                     @if(!$subKategori)
-                        Data Semua Kasbon
+                        Data Semua Transaksi
                     @else
                         Kasbon / {{ ucwords(str_replace('_', ' ', $subKategori)) }}
                     @endif
