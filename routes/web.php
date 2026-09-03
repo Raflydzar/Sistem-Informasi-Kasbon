@@ -8,7 +8,7 @@ use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return redirect()->route('welcome');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
