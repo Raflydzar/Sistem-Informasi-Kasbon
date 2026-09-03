@@ -2,13 +2,12 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
+                <!-- Judul Halaman Dinamis -->
                 <h2 class="font-bold text-xl text-slate-800 dark:text-slate-100 leading-tight">
-                    @if($kategoriUtama === 'kasbon')
-                        Data Transaksi Kasbon
-                    @elseif($kategoriUtama === 'petty_cash')
-                        Petty Cash {{ $subKategori ? ' / ' . ucwords(str_replace('_', ' ', $subKategori)) : '/ Semua' }}
+                    @if(!$subKategori)
+                        Data Semua Kasbon
                     @else
-                        Pencatatan Transaksi
+                        Kasbon / {{ ucwords(str_replace('_', ' ', $subKategori)) }}
                     @endif
                 </h2>
                 <p class="text-xs text-slate-400 mt-1">Buku kas terpadu dan mutasi saldo berjalan.</p>
@@ -22,7 +21,8 @@
                     Isi Saldo Kas
                 </a>
 
-                <a href="{{ route('transaksi.create', ['tipe' => 'keluar', 'kategori_utama' => $kategoriUtama ?? 'kasbon', 'sub_kategori' => $subKategori]) }}" 
+                <!-- Parameter kategori_utama dihapus dari link tambah pengeluaran -->
+                <a href="{{ route('transaksi.create', ['tipe' => 'keluar', 'sub_kategori' => $subKategori]) }}" 
                    class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-xl transition shadow-sm shadow-blue-500/20">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                     Tambah Pengeluaran
@@ -78,17 +78,17 @@
                                 <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">Kategori</th>
                                 <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs hidden md:table-cell w-32">Nota</th>
 
-                                <!-- Kolom Unit: Muncul untuk Kasbon, Fuel, dan Spare Part -->
-                                @if(in_array($subKategori, ['fuel', 'spare_part_vehicle']) || $kategoriUtama === 'kasbon' || !$kategoriUtama)
+                                <!-- Kolom Unit: Muncul untuk Kasbon Umum, Fuel, dan Spare Part, ATAU jika melihat Semua Kasbon -->
+                                @if(in_array($subKategori, ['kasbon_umum', 'fuel', 'spare_part_vehicle']) || !$subKategori)
                                     <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs hidden sm:table-cell w-28">Unit</th>
                                 @endif
 
                                 <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">Deskripsi</th>
 
-                                <!-- Kolom Volume: Muncul untuk Fuel -->
-                                @if(in_array($subKategori, ['fuel', 'building_material', 'electrical']) || (!$subKategori && $kategoriUtama === 'petty_cash'))
+                                <!-- Kolom Volume/Qty: Muncul untuk Fuel, Material, Electrical, ATAU jika melihat Semua Kasbon -->
+                                @if(in_array($subKategori, ['fuel', 'building_material', 'electrical']) || !$subKategori)
                                     <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs hidden sm:table-cell w-24 text-center">
-                                {{ $subKategori === 'fuel' ? 'Vol (L)' : 'Qty' }}
+                                        {{ $subKategori === 'fuel' ? 'Vol (L)' : 'Qty' }}
                                     </th>
                                 @endif
 
@@ -104,13 +104,14 @@
                                         {{ \Carbon\Carbon::parse($t->tanggal)->format('d M y') }}
                                     </td>
                                     <td class="px-4 py-3 text-xs whitespace-nowrap">
-                                        @if($t->kategori_utama === 'debit_kas' || $t->jenis === 'debit')
+                                        <!-- Penyesuaian nama kategori untuk mengakomodasi data lama dari database -->
+                                        @if($t->kategori_utama === 'debit_kas' || $t->kategori_utama === 'isi_saldo' || $t->jenis === 'debit')
                                             <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
                                                 Isi Saldo
                                             </span>
                                         @else
                                             <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 ring-1 ring-inset ring-slate-500/20">
-                                                {{ ucwords(str_replace('_', ' ', $t->sub_kategori ?? $t->kategori_utama)) }}
+                                                {{ ucwords(str_replace('_', ' ', $t->sub_kategori && $t->sub_kategori !== '-' ? $t->sub_kategori : $t->kategori_utama)) }}
                                             </span>
                                         @endif
                                     </td>
@@ -119,7 +120,7 @@
                                     </td>
 
                                     <!-- Isi Kolom Unit -->
-                                    @if(in_array($subKategori, ['fuel', 'spare_part_vehicle']) || $kategoriUtama === 'kasbon' || !$kategoriUtama)
+                                    @if(in_array($subKategori, ['kasbon_umum', 'fuel', 'spare_part_vehicle']) || !$subKategori)
                                         <td class="px-4 py-3 text-xs hidden sm:table-cell whitespace-nowrap">
                                             @if($t->kode_unit && $t->kode_unit !== '-')
                                                 <span class="font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-lg">
@@ -131,19 +132,19 @@
                                         </td>
                                     @endif
 
-                                        <td class="px-4 py-3 text-sm text-slate-800 dark:text-slate-200">
+                                    <td class="px-4 py-3 text-sm text-slate-800 dark:text-slate-200">
                                         {{ $t->deskripsi }}
-                                        </td>
+                                    </td>
 
                                     <!-- Isi Kolom Volume -->
-                                    @if(in_array($subKategori, ['fuel', 'building_material', 'electrical']) || (!$subKategori && $kategoriUtama === 'petty_cash'))
+                                    @if(in_array($subKategori, ['fuel', 'building_material', 'electrical']) || !$subKategori)
                                         <td class="px-4 py-3 text-xs hidden sm:table-cell text-center text-slate-600 dark:text-slate-300 whitespace-nowrap font-medium">
-                                    @if($t->volume)
-                                    {{ $t->sub_kategori === 'fuel' ? number_format($t->volume, 1) . ' L' : number_format($t->volume, 0) . ' Pcs' }}
-                                    @else
-                                      -
-                                    @endif
-                                    </td>
+                                            @if($t->volume)
+                                                {{ $t->sub_kategori === 'fuel' ? number_format($t->volume, 1) . ' L' : number_format($t->volume, 0) . ' Pcs' }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                     @endif
 
                                     <!-- Nominal -->
