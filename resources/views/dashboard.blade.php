@@ -217,7 +217,7 @@
                                 <th class="px-5 py-3.5">Jenis</th>
                                 <th class="px-5 py-3.5">Deskripsi</th>
                                 <th class="px-5 py-3.5">Nota</th>
-                                <th class="px-5 py-3.5 text-center">Vol (L)</th>
+                                <th class="px-5 py-3.5 text-center">Vol / Qty</th>
                                 <th class="px-5 py-3.5 text-right">Nominal</th>
                                 <th class="px-5 py-3.5 text-right">Saldo</th>
                             </tr>
