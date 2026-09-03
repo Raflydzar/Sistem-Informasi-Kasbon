@@ -126,7 +126,6 @@
                         @php
                             $subItems = [
                                 '' => 'Semua Kasbon',
-                                'kasbon_umum' => 'Kasbon Umum (Lainnya)',
                                 'building_material' => 'Building Material',
                                 'fuel' => 'Fuel (BBM)',
                                 'spare_part_vehicle' => 'Spare Part Vehicle',
@@ -134,6 +133,7 @@
                                 'water' => 'Water',
                                 'office_equipment' => 'Office Equipment',
                                 'mess_equipment' => 'Mess Equipment',
+                                'kasbon_umum' => 'Kasbon Umum (Lainnya)',
                             ];
                         @endphp
 
