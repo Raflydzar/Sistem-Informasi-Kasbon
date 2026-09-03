@@ -220,25 +220,6 @@
                     Laporan
                 </a>
             </div>
-
-            <!-- Sidebar Footer (User Profile & Logout) -->
-            <div class="p-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
-                <div class="px-2">
-                    <p class="text-sm font-bold text-slate-800 dark:text-slate-200">{{ Auth::user()->name }}</p>
-                    <p class="text-xs text-slate-400 truncate">{{ Auth::user()->email }}</p>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <a href="{{ route('profile.edit') }}" class="text-center px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition">
-                        Profile
-                    </a>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="w-full text-center px-3 py-2 text-xs font-medium text-white bg-rose-600 rounded-xl hover:bg-rose-500 transition">
-                            Log Out
-                        </button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 
