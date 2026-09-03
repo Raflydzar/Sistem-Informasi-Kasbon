@@ -215,6 +215,7 @@
                             <tr>
                                 <th class="px-5 py-3.5">Tanggal</th>
                                 <th class="px-5 py-3.5">Jenis</th>
+                                <th class="px-5 py-3.5">Kategori</th>
                                 <th class="px-5 py-3.5">Deskripsi</th>
                                 <th class="px-5 py-3.5">Nota</th>
                                 <th class="px-5 py-3.5 text-center">Vol / Qty</th>
@@ -228,6 +229,8 @@
                                     <td class="px-5 py-4 whitespace-nowrap text-xs text-slate-500">
                                         {{ \Carbon\Carbon::parse($trx->tanggal)->translatedFormat('d M Y') }}
                                     </td>
+                                    
+                                    <!-- Jenis -->
                                     <td class="px-5 py-4 whitespace-nowrap">
                                         @if ($trx->jenis === 'debit')
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
@@ -239,6 +242,20 @@
                                             </span>
                                         @endif
                                     </td>
+
+                                    <!-- Kategori -->
+                                    <td class="px-5 py-4 whitespace-nowrap">
+                                        @if($trx->kategori_utama === 'debit_kas' || $trx->kategori_utama === 'isi_saldo' || $trx->jenis === 'debit')
+                                            <span class="text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                                                Isi Saldo
+                                            </span>
+                                        @else
+                                            <span class="text-xs font-medium text-slate-700 dark:text-slate-300">
+                                                {{ ucwords(str_replace('_', ' ', $trx->sub_kategori && $trx->sub_kategori !== '-' ? $trx->sub_kategori : $trx->kategori_utama)) }}
+                                            </span>
+                                        @endif
+                                    </td>
+
                                     <td class="px-5 py-4 text-slate-800 dark:text-slate-200">
                                         {{ $trx->deskripsi ?? '-' }}
                                     </td>
@@ -246,7 +263,11 @@
                                         {{ $trx->no_nota ?? '-' }}
                                     </td>
                                     <td class="px-5 py-4 whitespace-nowrap text-center text-xs text-slate-500">
-                                        {{ $trx->volume ? $trx->volume . ' L' : '-' }}
+                                        @if($trx->volume)
+                                            {{ $trx->sub_kategori === 'fuel' ? number_format($trx->volume, 1) . ' L' : number_format($trx->volume, 0) . ' Pcs' }}
+                                        @else
+                                            -
+                                        @endif
                                     </td>
                                     <td class="px-5 py-4 whitespace-nowrap text-right font-semibold {{ $trx->jenis === 'debit' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
                                         {{ $trx->jenis === 'debit' ? '+' : '-' }} Rp {{ number_format($trx->nominal, 0, ',', '.') }}
@@ -257,7 +278,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="px-5 py-10 text-center text-slate-400 text-sm">
+                                    <td colspan="8" class="px-5 py-10 text-center text-slate-400 text-sm">
                                         Tidak ada riwayat transaksi pada filter ini.
                                     </td>
                                 </tr>
