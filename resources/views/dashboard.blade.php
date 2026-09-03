@@ -20,7 +20,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-                        Dashboard Kasbon
+                        Dashboard Transaksi
                     </h1>
                     <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
                         Ringkasan keuangan, analitik grafik, dan mutasi saldo kas.
