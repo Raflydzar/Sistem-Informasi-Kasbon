@@ -13,14 +13,6 @@
         @csrf
         @method('put')
 
-        <!-- Notifikasi Sukses -->
-        @if (session('status') === 'password-updated')
-            <div class="p-3 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 rounded-xl text-sm font-medium flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                Password berhasil diubah!
-            </div>
-        @endif
-
         <!-- Current Password -->
         <div>
             <x-input-label for="update_password_current_password" :value="__('Current Password')" />
@@ -74,6 +66,23 @@
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
+
+            <!-- Notifikasi diletakkan di sebelah tombol Save -->
+            @if (session('status') === 'password-updated')
+                <div x-data="{ show: true }"
+                     x-show="show"
+                     x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 scale-90"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-300"
+                     x-transition:leave-start="opacity-100 scale-100"
+                     x-transition:leave-end="opacity-0 scale-90"
+                     x-init="setTimeout(() => show = false, 3500)"
+                     class="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 rounded-lg text-sm font-medium">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    Password berhasil diubah!
+                </div>
+            @endif
         </div>
     </form>
 </section>
