@@ -20,15 +20,48 @@
                 </div>
             </div>
 
-            <!-- Sisi Kanan: Badge Nama User -->
-            <div class="flex sm:items-center">
-                <button @click="sidebarOpen = true" class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition text-sm font-medium text-slate-700 dark:text-slate-200">
-                    <div class="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
-                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                    </div>
-                    <span class="hidden sm:inline-block">{{ Auth::user()->name }}</span>
-                </button>
+            <!-- Sisi Kanan: Badge Nama User (Dropdown Profile) -->
+    <div class="flex items-center relative" x-data="{ openProfile: false }">
+        <button @click="openProfile = !openProfile" @click.away="openProfile = false" 
+                class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition text-sm font-medium text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/50">
+            <div class="shrink-0 w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
+                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
             </div>
+            <span class="whitespace-nowrap">{{ Auth::user()->name }}</span>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div x-show="openProfile" x-cloak
+             x-transition:enter="transition ease-out duration-100"
+             x-transition:enter-start="transform opacity-0 scale-95"
+             x-transition:enter-end="transform opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-75"
+             x-transition:leave-start="transform opacity-100 scale-100"
+             x-transition:leave-end="transform opacity-0 scale-95"
+             class="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-lg py-3 px-4 z-50">
+            
+            <!-- Info User -->
+            <div class="mb-3 px-1">
+                <p class="text-sm font-bold text-slate-800 dark:text-slate-200">{{ Auth::user()->name }}</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ Auth::user()->email }}</p>
+            </div>
+
+            <!-- Tombol Aksi -->
+            <div class="grid grid-cols-2 gap-2">
+                <a href="{{ route('profile.edit') }}" 
+                   class="flex items-center justify-center px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                    Profile
+                </a>
+                <form method="POST" action="{{ route('logout') }}" class="w-full">
+                    @csrf
+                    <button type="submit" 
+                            class="w-full flex items-center justify-center px-3 py-2 text-xs font-medium text-white bg-rose-600 rounded-xl hover:bg-rose-500 transition">
+                        Log Out
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 
             <!-- Hamburger (Mobile Header)
             <div class="-me-2 flex items-center sm:hidden">
