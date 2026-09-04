@@ -125,7 +125,6 @@
                         
                         @php
                             $subItems = [
-                                '' => 'Semua Kasbon',
                                 'building_material' => 'Building Material',
                                 'fuel' => 'Fuel (BBM)',
                                 'spare_part_vehicle' => 'Spare Part Vehicle',
