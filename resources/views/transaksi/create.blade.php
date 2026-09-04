@@ -49,7 +49,7 @@
                                 Unit Terkait <span x-show="['kasbon_umum', 'fuel', 'spare_part_vehicle'].includes(subKategori)" class="text-rose-500">*</span>
                             </label>
                             <select name="kode_unit" 
-                                    :required="['kasbon_umum', 'fuel', 'spare_part_vehicle'].includes(subKategori)"
+                                    :required="['fuel', 'spare_part_vehicle'].includes(subKategori)"
                                     class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
                                 <option value="" class="dark:bg-slate-900">-- Pilih Unit --</option>
                                 @foreach($units as $u)
@@ -62,7 +62,7 @@
                     <!-- Deskripsi -->
                     <div>
                         <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">Deskripsi / Keterangan</label>
-                        <input type="text" name="deskripsi" placeholder="{{ $tipe === 'masuk' ? 'Contoh: Pengisian Kas Awal' : 'Contoh: Pembelian Semen / Solar Unit DT-01' }}" required 
+                        <input type="text" name="deskripsi" placeholder="{{ $tipe === 'masuk' ? 'Contoh: Pengisian Kas Awal' : 'Contoh: Pembelian Semen' }}" required 
                                class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
                     </div>
 
@@ -70,12 +70,12 @@
                     <div class="grid grid-cols-1" :class="subKategori === 'fuel' ? 'sm:grid-cols-2 gap-4' : ''">
                         <div>
                             <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">No. Nota (Opsional)</label>
-                            <input type="text" name="no_nota" placeholder="Contoh: NT-001" 
+                            <input type="text" name="no_nota" 
                                    class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
                         </div>
 
                         <!-- Input Fleksibel: Volume (Liter) atau Jumlah (Qty) -->
-                        <div x-show="['fuel', 'building_material', 'electrical'].includes(subKategori)" x-cloak x-transition>
+                        <div x-show="['fuel', 'building_material', 'spare_part_vehicle, 'electrical','office_equipment','mess_equipment'].includes(subKategori)" x-cloak x-transition>
                             <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1.5">
                                 <span x-text="subKategori === 'fuel' ? 'Volume (Liter)' : 'Jumlah / Qty'"></span>
                                 <span class="text-rose-500">*</span>
