@@ -27,31 +27,27 @@
                                    class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
                         </div>
 
-                        <!-- Kategori Transaksi (Satu Pintu) -->
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Kategori Transaksi</label>
-                            <select name="sub_kategori" 
+                        <!-- Jenis Transaksi (Kategori Utama) -->
+                        <div x-data="{ kategoriUtama: '{{ request('kategori_utama') }}' }">
+                            <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Jenis Transaksi</label>
+                            <select name="kategori_utama" x-model="kategoriUtama"
                                     class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
-                                <option value="" class="dark:bg-slate-900">-- Semua Kategori --</option>
-                                <option value="kasbon_umum" class="dark:bg-slate-900" {{ request('sub_kategori') === 'kasbon_umum' ? 'selected' : '' }}>Kasbon Umum (Lainnya)</option>
-                                <option value="building_material" class="dark:bg-slate-900" {{ request('sub_kategori') === 'building_material' ? 'selected' : '' }}>Building Material</option>
-                                <option value="fuel" class="dark:bg-slate-900" {{ request('sub_kategori') === 'fuel' ? 'selected' : '' }}>Fuel (BBM Unit)</option>
-                                <option value="spare_part_vehicle" class="dark:bg-slate-900" {{ request('sub_kategori') === 'spare_part_vehicle' ? 'selected' : '' }}>Spare Part Vehicle</option>
-                                <option value="electrical" class="dark:bg-slate-900" {{ request('sub_kategori') === 'electrical' ? 'selected' : '' }}>Electrical</option>
-                                <option value="water" class="dark:bg-slate-900" {{ request('sub_kategori') === 'water' ? 'selected' : '' }}>Water</option>
-                                <option value="office_equipment" class="dark:bg-slate-900" {{ request('sub_kategori') === 'office_equipment' ? 'selected' : '' }}>Office Equipment</option>
-                                <option value="mess_equipment" class="dark:bg-slate-900" {{ request('sub_kategori') === 'mess_equipment' ? 'selected' : '' }}>Mess Equipment</option>
+                                <option value="" class="dark:bg-slate-900">-- Semua Transaksi --</option>
+                                <option value="petty_cash" class="dark:bg-slate-900" {{ request('kategori_utama') === 'petty_cash' ? 'selected' : '' }}>Petty Cash</option>
+                                <option value="invoice_payment" class="dark:bg-slate-900" {{ request('kategori_utama') === 'invoice_payment' ? 'selected' : '' }}>Invoice Payment</option>
                             </select>
                         </div>
 
-                        <!-- Sub-Kategori Petty Cash -->
+                        <!-- Sub Petty Cash -->
                         <div>
                             <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Sub Petty Cash</label>
-                            <select name="sub_kategori" :disabled="kategoriUtama !== 'petty_cash'"
-                                    class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            <!-- Hanya aktif jika Kategori Utama adalah Petty Cash atau Kosong -->
+                            <select name="sub_kategori" 
+                                    class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
                                 <option value="" class="dark:bg-slate-900">-- Semua Sub --</option>
+                                <option value="kasbon_umum" class="dark:bg-slate-900" {{ request('sub_kategori') === 'kasbon_umum' ? 'selected' : '' }}>Kasbon Umum (Lainnya)</option>
                                 <option value="building_material" class="dark:bg-slate-900" {{ request('sub_kategori') === 'building_material' ? 'selected' : '' }}>Building Material</option>
-                                <option value="fuel" class="dark:bg-slate-900" {{ request('sub_kategori') === 'fuel' ? 'selected' : '' }}>Fuel (BBM)</option>
+                                <option value="fuel" class="dark:bg-slate-900" {{ request('sub_kategori') === 'fuel' ? 'selected' : '' }}>Fuel (BBM Unit)</option>
                                 <option value="spare_part_vehicle" class="dark:bg-slate-900" {{ request('sub_kategori') === 'spare_part_vehicle' ? 'selected' : '' }}>Spare Part Vehicle</option>
                                 <option value="electrical" class="dark:bg-slate-900" {{ request('sub_kategori') === 'electrical' ? 'selected' : '' }}>Electrical</option>
                                 <option value="water" class="dark:bg-slate-900" {{ request('sub_kategori') === 'water' ? 'selected' : '' }}>Water</option>

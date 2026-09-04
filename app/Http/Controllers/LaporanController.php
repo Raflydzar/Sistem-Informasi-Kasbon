@@ -17,7 +17,8 @@ class LaporanController extends Controller
         $tglAkhir = $request->get('tgl_akhir', now()->toDateString());
         $kodeUnit = $request->get('kode_unit');
         
-        // Hapus variabel kategoriUtama, hanya ambil sub_kategori
+        // Kembalikan variabel kategoriUtama dan subKategori
+        $kategoriUtama = $request->get('kategori_utama');
         $subKategori = $request->get('sub_kategori');
 
         $query = Transaksi::whereBetween('tanggal', [$tglAwal, $tglAkhir]);
@@ -27,7 +28,17 @@ class LaporanController extends Controller
             $query->where('kode_unit', $kodeUnit);
         }
 
-        // Filter Kategori (Sub Kategori)
+        // Filter Kategori Utama (Disesuaikan dengan logika "Satu Pintu")
+        if ($kategoriUtama) {
+            if ($kategoriUtama === 'petty_cash') {
+                // Cari yang 'petty_cash' (data lama) ATAU 'kasbon' (data baru dari sistem satu pintu)
+                $query->whereIn('kategori_utama', ['petty_cash', 'kasbon']);
+            } else {
+                $query->where('kategori_utama', $kategoriUtama);
+            }
+        }
+
+        // Filter Sub-Kategori
         if ($subKategori) {
             $query->where('sub_kategori', $subKategori);
         }
@@ -40,7 +51,8 @@ class LaporanController extends Controller
 
         return view('laporan.index', compact(
             'transaksis', 'units', 'tglAwal', 'tglAkhir', 'kodeUnit', 
-            'subKategori', 'totalDebit', 'totalKredit', 'selisih'
+            'kategoriUtama', 'subKategori', 
+            'totalDebit', 'totalKredit', 'selisih'
         ));
     }
 
@@ -50,7 +62,7 @@ class LaporanController extends Controller
         $tglAkhir = $request->get('tgl_akhir', now()->toDateString());
         $kodeUnit = $request->get('kode_unit');
         
-        // Hapus variabel kategoriUtama, hanya ambil sub_kategori
+        $kategoriUtama = $request->get('kategori_utama');
         $subKategori = $request->get('sub_kategori');
 
         // 1. Hitung Saldo Awal sebelum periode filter
@@ -67,7 +79,16 @@ class LaporanController extends Controller
             $query->where('kode_unit', $kodeUnit);
         }
         
-        // Filter Kategori (Sub Kategori)
+        // Filter Kategori Utama
+        if ($kategoriUtama) {
+            if ($kategoriUtama === 'petty_cash') {
+                $query->whereIn('kategori_utama', ['petty_cash', 'kasbon']);
+            } else {
+                $query->where('kategori_utama', $kategoriUtama);
+            }
+        }
+
+        // Filter Sub Kategori
         if ($subKategori) {
             $query->where('sub_kategori', $subKategori);
         }
@@ -102,11 +123,11 @@ class LaporanController extends Controller
 
         $pdf = Pdf::loadView('laporan.pdf', compact(
             'transaksis', 'tglAwal', 'tglAkhir', 'kodeUnit', 
-            'subKategori',
+            'kategoriUtama', 'subKategori',
             'saldoAwal', 'saldoAwalHeader', 'totalDebit', 'totalKredit', 'saldoAkhir'
         ))->setPaper('a4', 'portrait');
         
-        $namaFile = 'Laporan_Transaksi_' . ($subKategori ?? 'Semua') . '_' . $tglAwal . '_sd_' . $tglAkhir . '.pdf';
+        $namaFile = 'Laporan_Transaksi_' . ($kategoriUtama ?? 'Semua') . '_' . $tglAwal . '_sd_' . $tglAkhir . '.pdf';
 
         return $pdf->stream($namaFile);
     }
