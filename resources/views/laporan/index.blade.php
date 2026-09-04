@@ -29,7 +29,7 @@
 
                         <!-- Wrapper Alpine.js (Gunakan class 'contents' agar layout grid tidak berantakan) -->
                         <div class="contents" x-data="{ kategoriUtama: '{{ request('kategori_utama') }}' }">
-                            
+
                             <!-- Jenis Transaksi (Kategori Utama) -->
                             <div>
                                 <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Jenis Transaksi</label>
@@ -40,7 +40,7 @@
                                     <option value="invoice_payment" class="dark:bg-slate-900" {{ request('kategori_utama') === 'invoice_payment' ? 'selected' : '' }}>Invoice Payment</option>
                                 </select>
                             </div>
-                        
+
                             <!-- Sub Petty Cash -->
                             <div>
                                 <!-- Label memudar jika disabled -->
@@ -48,7 +48,7 @@
                                        :class="kategoriUtama === 'invoice_payment' ? 'opacity-50' : ''">
                                     Sub Petty Cash
                                 </label>
-                                
+
                                 <!-- Field disabled & berganti warna jika Invoice Payment dipilih -->
                                 <select name="sub_kategori" 
                                         :disabled="kategoriUtama === 'invoice_payment'"
@@ -65,7 +65,7 @@
                                     <option value="mess_equipment" class="dark:bg-slate-900" {{ request('sub_kategori') === 'mess_equipment' ? 'selected' : '' }}>Mess Equipment</option>
                                 </select>
                             </div>
-                        
+
                         </div>
 
                         <!-- Unit -->
@@ -99,28 +99,6 @@
                 </form>
             </div>
 
-            <!-- 2. Summary Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Debit Periode Ini</span>
-                    <p class="text-xl font-bold tracking-tight text-blue-600 dark:text-blue-400 mt-2">
-                        Rp {{ number_format($totalDebit, 0, ',', '.') }}
-                    </p>
-                </div>
-                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Kredit Periode Ini</span>
-                    <p class="text-xl font-bold tracking-tight text-rose-600 dark:text-rose-400 mt-2">
-                        Rp {{ number_format($totalKredit, 0, ',', '.') }}
-                    </p>
-                </div>
-                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Selisih Kas Periode Ini</span>
-                    <p class="text-xl font-bold tracking-tight text-emerald-600 dark:text-emerald-400 mt-2">
-                        Rp {{ number_format($selisih, 0, ',', '.') }}
-                    </p>
-                </div>
-            </div>
-
             <!-- 3. Tabel Laporan Transaksi -->
             <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden">
                 <div class="overflow-x-auto">
@@ -135,7 +113,6 @@
                                 <th class="px-4 py-3.5">Kode Unit</th>
                                 <th class="px-4 py-3.5 text-right">Debit</th>
                                 <th class="px-4 py-3.5 text-right">Kredit</th>
-                                <th class="px-4 py-3.5 text-right">Saldo</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
@@ -176,9 +153,6 @@
                                     </td>
                                     <td class="px-4 py-3.5 whitespace-nowrap text-right font-semibold text-rose-600 dark:text-rose-400">
                                         {{ $item->jenis === 'kredit' ? 'Rp ' . number_format($item->nominal, 0, ',', '.') : '-' }}
-                                    </td>
-                                    <td class="px-4 py-3.5 whitespace-nowrap text-right font-bold font-mono text-slate-900 dark:text-slate-100">
-                                        Rp {{ number_format($item->saldo, 0, ',', '.') }}
                                     </td>
                                 </tr>
                             @empty
