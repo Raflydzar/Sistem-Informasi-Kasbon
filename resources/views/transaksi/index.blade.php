@@ -10,7 +10,13 @@
                         Kasbon / {{ ucwords(str_replace('_', ' ', $subKategori)) }}
                     @endif
                 </h2>
-                <p class="text-xs text-slate-400 mt-1">Buku kas terpadu dan mutasi saldo berjalan.</p>
+                <p class="text-xs text-slate-400 mt-1">
+                    @if(!$subKategori)
+                        Buku kas terpadu dan mutasi saldo berjalan.
+                    @else
+                        Daftar riwayat transaksi khusus kategori ini.
+                    @endif
+                </p>
             </div>
 
             <!-- Tombol Aksi Tambah Transaksi -->
@@ -34,7 +40,8 @@
     <div class="py-8 bg-slate-50 dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
-            <!-- 1. Card Ringkasan Saldo -->
+            <!-- 1. Card Ringkasan Saldo (Hanya muncul jika TIDAK ADA filter sub-kategori) -->
+            @if(!$subKategori)
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Saldo Awal -->
                 <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-between">
@@ -62,6 +69,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             <!-- 2. Tabel Riwayat Transaksi -->
             <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden">
@@ -93,7 +101,11 @@
                                 @endif
 
                                 <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs text-right w-36">Nominal</th>
-                                <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs text-right w-36">Saldo Kas</th>
+                                
+                                <!-- Header Kolom Saldo Kas (Hanya muncul di Semua Kasbon) -->
+                                @if(!$subKategori)
+                                    <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs text-right w-36">Saldo Kas</th>
+                                @endif
                             </tr>
                         </thead>
 
@@ -104,7 +116,6 @@
                                         {{ \Carbon\Carbon::parse($t->tanggal)->format('d M y') }}
                                     </td>
                                     <td class="px-4 py-3 text-xs whitespace-nowrap">
-                                        <!-- Penyesuaian nama kategori untuk mengakomodasi data lama dari database -->
                                         @if($t->kategori_utama === 'debit_kas' || $t->kategori_utama === 'isi_saldo' || $t->jenis === 'debit')
                                             <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
                                                 Isi Saldo
@@ -152,14 +163,17 @@
                                         {{ $t->jenis === 'debit' ? '+' : '-' }}Rp {{ number_format($t->nominal, 0, ',', '.') }}
                                     </td>
 
-                                    <!-- Saldo Berjalan -->
-                                    <td class="px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 text-right whitespace-nowrap font-mono">
-                                        Rp {{ number_format($t->saldo, 0, ',', '.') }}
-                                    </td>
+                                    <!-- Saldo Berjalan (Hanya muncul di Semua Kasbon) -->
+                                    @if(!$subKategori)
+                                        <td class="px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 text-right whitespace-nowrap font-mono">
+                                            Rp {{ number_format($t->saldo, 0, ',', '.') }}
+                                        </td>
+                                    @endif
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="px-4 py-12 text-center text-slate-400 text-xs">
+                                    <!-- Menyesuaikan colspan tabel agar rapi saat kosong -->
+                                    <td colspan="{{ !$subKategori ? '8' : '7' }}" class="px-4 py-12 text-center text-slate-400 text-xs">
                                         Belum ada transaksi yang tercatat pada kategori ini.
                                     </td>
                                 </tr>
