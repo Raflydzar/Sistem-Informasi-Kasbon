@@ -33,7 +33,7 @@
                             <select name="kategori_utama" x-model="kategoriUtama"
                                     class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition">
                                 <option value="" class="dark:bg-slate-900">-- Semua Transaksi --</option>
-                                <option value="kasbon" class="dark:bg-slate-900" {{ request('kategori_utama') === 'kasbon' ? 'selected' : '' }}>Kasbon</option>
+                                <option value="invoice_payment" class="dark:bg-slate-900" {{ request('kategori_utama') === 'invoice_payment' ? 'selected' : '' }}>Invoice Payment</option>
                                 <option value="petty_cash" class="dark:bg-slate-900" {{ request('kategori_utama') === 'petty_cash' ? 'selected' : '' }}>Petty Cash</option>
                             </select>
                         </div>
