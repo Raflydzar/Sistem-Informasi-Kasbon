@@ -82,7 +82,7 @@
                     <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
                         <thead class="bg-slate-50/50 dark:bg-slate-800/50 border-y border-slate-200 dark:border-slate-800">
                             <tr>
-                                <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs w-24">Tgl</th>
+                                <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs w-24">Tanggal</th>
                                 <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">Kategori</th>
                                 <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs hidden md:table-cell w-32">Nota</th>
 
@@ -94,7 +94,7 @@
                                 <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">Deskripsi</th>
 
                                 <!-- Kolom Volume/Qty: Muncul untuk Fuel, Material, Electrical, ATAU jika melihat Semua Kasbon -->
-                                @if(in_array($subKategori, ['fuel', 'building_material', 'electrical']) || !$subKategori)
+                                @if(in_array($subKategori, ['fuel', 'building_material', 'electrical', 'office_equipment', 'mess_equipment']) || !$subKategori)
                                     <th class="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs hidden sm:table-cell w-24 text-center">
                                         {{ $subKategori === 'fuel' ? 'Vol (L)' : 'Qty' }}
                                     </th>
@@ -148,7 +148,7 @@
                                     </td>
 
                                     <!-- Isi Kolom Volume -->
-                                    @if(in_array($subKategori, ['fuel', 'building_material', 'electrical']) || !$subKategori)
+                                    @if(in_array($subKategori, ['fuel', 'building_material', 'electrical', 'office_equipment', 'mess_equipment']) || !$subKategori)
                                         <td class="px-4 py-3 text-xs hidden sm:table-cell text-center text-slate-600 dark:text-slate-300 whitespace-nowrap font-medium">
                                             @if($t->volume)
                                                 {{ $t->sub_kategori === 'fuel' ? number_format($t->volume, 1) . ' L' : number_format($t->volume, 0) . ' Pcs' }}
