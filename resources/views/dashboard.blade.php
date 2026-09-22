@@ -114,7 +114,6 @@
                         <span class="text-[11px] text-slate-400 mt-1 block">Aktivitas harian</span>
                     </div>
                 </div>
-
             </div>
 
             <!-- 3. Bagian Grafik Analitik -->
