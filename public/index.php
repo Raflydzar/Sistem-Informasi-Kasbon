@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
@@ -34,4 +34,4 @@ foreach ($dirs as $dir) {
 $app->useStoragePath($storagePath);
 
 // Handle Request
-$app->handleRequest(Request::capture());
+//$app->handleRequest(Request::capture());
